@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "description": "Crawl a website to get Summary, Links, Images, Headings, Schema, and more.",
     "action": {
-      "default_popup": "index.html",
+      "default_popup": "popup.html",
       "default_title": "digspot-ai",
       "default_icon": {
         "16": "icon16.png"

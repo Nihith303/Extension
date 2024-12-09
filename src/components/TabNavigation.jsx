@@ -1,25 +1,3 @@
-// import React from "react";
-// import "./TabNavigation.css";
-
-// const TabNavigation = ({ activeTab, setActiveTab }) => (
-//   <div className="tabs">
-//     <button
-//       className={`tab-button ${activeTab === "summary" ? "active" : ""}`}
-//       onClick={() => setActiveTab("summary")}
-//     >
-//       Summary
-//     </button>
-//     <button
-//       className={`tab-button ${activeTab === "links" ? "active" : ""}`}
-//       onClick={() => setActiveTab("links")}
-//     >
-//       Links
-//     </button>
-//   </div>
-// );
-
-// export default TabNavigation;
-
 import React from "react";
 import "./TabNavigation.css";
 
@@ -42,6 +20,12 @@ const TabNavigation = ({ activeTab, setActiveTab }) => (
       onClick={() => setActiveTab("images")}
     >
       Images
+    </button>
+    <button
+      className={`tab-button ${activeTab === "headers" ? "active" : ""}`}
+      onClick={() => setActiveTab("headers")}
+    >
+      Headers
     </button>
   </div>
 );
