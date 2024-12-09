@@ -121,7 +121,7 @@ const Image = () => {
             {images[view].map((img, index) => (
               <React.Fragment key={index}>
                 <div className="image-details">
-                  <p><strong>URL:</strong> {img.src}</p>
+                  <p onClick={() => handleImageClick(img.src)}><strong>URL:</strong> <span className="image-url">{img.src}</span></p>
                   <p><strong>ALT:</strong> {img.alt}</p>
                   <p><strong>Description:</strong> {img.longDesc}</p>
                 </div>

@@ -1,19 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./Header.css";
 
-const Header = () => {
-  const [headings, setHeadings] = useState({
-    h1: [],
-    h2: [],
-    h3: [],
-    h4: [],
-    h5: [],
-    h6: [],
+const Headers = () => {
+  const [headers, setHeaders] = useState([]);
+  const [headerCounts, setHeaderCounts] = useState({
+    h1: 0, h2: 0, h3: 0, h4: 0, h5: 0, h6: 0,
   });
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchHeadings = async () => {
+    const fetchHeaders = async () => {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       const tabId = tab.id;
 
@@ -21,69 +16,66 @@ const Header = () => {
         {
           target: { tabId },
           func: () => {
-            const tags = Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6")).map(
-              (tag) => ({
-                tagName: tag.tagName,
-                textContent: tag.textContent.trim(),
-                parent: tag.parentElement.tagName,
-              })
-            );
-
-            return tags.reduce(
-              (acc, tag) => {
-                acc[tag.tagName.toLowerCase()].push(tag);
-                return acc;
-              },
-              { h1: [], h2: [], h3: [], h4: [], h5: [], h6: [] }
-            );
+            const headers = [];
+            const headerTags = Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+            headerTags.forEach((header) => {
+              headers.push({
+                tag: header.tagName.toLowerCase(),
+                text: header.textContent.trim(),
+              });
+            });
+            return headers;
           },
         },
         ([result]) => {
-          setHeadings(result.result);
-          setLoading(false);
+          const fetchedHeaders = result.result || [];
+          const counts = {
+            h1: fetchedHeaders.filter((h) => h.tag === "h1").length,
+            h2: fetchedHeaders.filter((h) => h.tag === "h2").length,
+            h3: fetchedHeaders.filter((h) => h.tag === "h3").length,
+            h4: fetchedHeaders.filter((h) => h.tag === "h4").length,
+            h5: fetchedHeaders.filter((h) => h.tag === "h5").length,
+            h6: fetchedHeaders.filter((h) => h.tag === "h6").length,
+          };
+
+          setHeaders(fetchedHeaders);
+          setHeaderCounts(counts);
         }
       );
     };
 
-    fetchHeadings();
+    fetchHeaders();
   }, []);
-
-  const renderHeadingStructure = (headings) => {
-    const levels = Object.entries(headings);
-    const renderLevel = (tags, level = 1) =>
-      tags.map((tag, index) => (
-        <div key={`${level}-${index}`} style={{ paddingLeft: `${level * 15}px` }}>
-          <strong>{tag.tagName}</strong>: {tag.textContent || "No Content"}
-          <br />
-        </div>
-      ));
-
-    return levels.map(([key, tags], index) => renderLevel(tags, index));
-  };
 
   return (
     <div>
       <h2>Headers</h2>
-      {loading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className="header-counts">
-            <div>H1: {headings.h1.length}</div>
-            <div>H2: {headings.h2.length}</div>
-            <div>H3: {headings.h3.length}</div>
-            <div>H4: {headings.h4.length}</div>
-            <div>H5: {headings.h5.length}</div>
-            <div>H6: {headings.h6.length}</div>
+      {/* Header Counts */}
+      <div className="header-counts">
+        {Object.keys(headerCounts).map((key) => (
+          <div className="header-item" key={key}>
+          <span>{key.toUpperCase()}</span>
+          <span>{headerCounts[key] || 0}</span>
+        </div>
+        ))}
+      </div>
+
+      {/* Header Structure */}
+      <div className="header-structure">
+        {headers.map((header, index) => (
+          <div
+            key={index}
+            className={`header-content header-${header.tag}`}
+          >
+            <span className="dashed-line"></span> 
+            <strong><span className="header-tag">{header.tag}</span></strong>
+            <span className="header-text">{header.text}</span>
           </div>
-          <div className="header-structure">
-            <h3>Content in Tags:</h3>
-            <div>{renderHeadingStructure(headings)}</div>
-          </div>
-        </>
-      )}
+        ))}
+      </div>
     </div>
   );
 };
 
-export default Header;
+export default Headers;
+

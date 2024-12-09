@@ -125,7 +125,10 @@ const Links = () => {
               <React.Fragment key={index}>
                 <div className="link-details">
                   <p>
-                    <strong>URL:</strong> {link.href}
+                    <strong>URL:</strong> 
+                    <a href={link.href} className="link-url" target="_blank" rel="noopener noreferrer">
+                      {link.href}
+                    </a>
                   </p>
                   <p>
                     <strong>Title:</strong> {link.title}
