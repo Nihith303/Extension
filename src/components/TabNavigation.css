@@ -11,11 +11,12 @@
   
   /* Tab Buttons */
   .tab-button {
-    padding: 12px 20px;
-    font-size: 16px; 
+    padding: 12px 18px;
+    font-size: 1rem; 
     font-weight: bold;
     cursor: pointer;
     border: none;
+    border-radius: 5px;;
     background-color: #ffffff;
     color: #007BFF; 
     transition: background-color 0.3s ease, color 0.3s ease;

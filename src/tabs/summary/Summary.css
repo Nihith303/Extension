@@ -42,7 +42,7 @@ body {
     margin-top: 20px;
   }
   
-  button {
+  .buttons button {
     padding: 10px 10px; /* Larger buttons */
     background-color: #007BFF;
     color: white;
@@ -56,11 +56,11 @@ body {
     transition: background-color 0.3s ease;
   }
   
-  button:hover {
+  .buttons button:hover {
     background-color: #0056b3; /* Darker blue on hover */
   }
   
-  button:active {
+  .buttons button:active {
     transform: scale(0.98); /* Subtle click effect */
   }
   

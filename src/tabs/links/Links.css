@@ -11,7 +11,6 @@ div {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
 .link-item {
@@ -46,13 +45,17 @@ div {
 
 /* Filter buttons */
 .filter-buttons {
+  gap: 2px;
   display: flex;
-  gap: 10px;
-  margin-bottom: 1rem;
+  margin: 1.5rem 0px;
+}
+
+.link-export-button{
+  margin-left: 8rem;
 }
 
 .filter-buttons button {
-  padding: 4px 8px;
+  padding: 10px 10px;
   font-size: 1rem;
   cursor: pointer;
   border: none;

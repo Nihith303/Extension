@@ -116,7 +116,7 @@ const Links = () => {
               onClick={() => setView("unique")}>
               Unique
             </button>
-            <button onClick={exportToCSV}>Export Links</button>
+            <button className="link-export-button" onClick={exportToCSV}>Export</button>
           </div>
 
            {/* Links table  */}
