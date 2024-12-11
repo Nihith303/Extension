@@ -29,5 +29,5 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx"],
   },
-  mode: "development",
+  mode: "production",
 };
