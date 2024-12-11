@@ -5,6 +5,7 @@ import Links from "./tabs/links/Links";
 import Images from "./tabs/imagestab/Images";
 import Header from "./tabs/header/Header"; 
 import Schema from "./tabs/schema/Schema";
+import PageSpeedTest from "./tabs/pagespeed/PageSpeed";
 
 const App = () => {
   const [activeTab, setActiveTab] = useState("summary"); 
@@ -18,6 +19,7 @@ const App = () => {
       {activeTab === "images" && <Images />}
       {activeTab === "headers" && <Header />} 
       {activeTab === "schema" && <Schema />}
+      {activeTab === "pagespeedtest" && <PageSpeedTest />}
     </div>
   );
 };

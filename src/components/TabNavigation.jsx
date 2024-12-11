@@ -28,6 +28,11 @@ const TabNavigation = ({ activeTab, setActiveTab }) => (
       onClick={() => setActiveTab("schema")}>
       Schema
   </button>
+  <button
+      className={`tab-button ${activeTab === "pagespeedtest" ? "active" : ""}`}
+      onClick={() => setActiveTab("pagespeedtest")}>
+      PageSpeed
+    </button>
   </div>
 );
 
