@@ -4,12 +4,20 @@ import "./Header.css";
 const Headers = () => {
   const [headers, setHeaders] = useState([]);
   const [headerCounts, setHeaderCounts] = useState({
-    h1: 0, h2: 0, h3: 0, h4: 0, h5: 0, h6: 0,
+    h1: 0,
+    h2: 0,
+    h3: 0,
+    h4: 0,
+    h5: 0,
+    h6: 0,
   });
 
   useEffect(() => {
     const fetchHeaders = async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
       const tabId = tab.id;
 
       chrome.scripting.executeScript(
@@ -17,7 +25,9 @@ const Headers = () => {
           target: { tabId },
           func: () => {
             const headers = [];
-            const headerTags = Array.from(document.querySelectorAll("h1, h2, h3, h4, h5, h6"));
+            const headerTags = Array.from(
+              document.querySelectorAll("h1, h2, h3, h4, h5, h6")
+            );
             headerTags.forEach((header) => {
               headers.push({
                 tag: header.tagName.toLowerCase(),
@@ -47,35 +57,39 @@ const Headers = () => {
     fetchHeaders();
   }, []);
 
+  const isEmpty = Object.values(headerCounts).every((count) => count === 0);
+
   return (
     <div>
       <h2>Headers</h2>
-      {/* Header Counts */}
       <div className="header-counts">
         {Object.keys(headerCounts).map((key) => (
           <div className="header-item" key={key}>
-          <span>{key.toUpperCase()}</span>
-          <span>{headerCounts[key] || 0}</span>
-        </div>
-        ))}
-      </div>
-
-      {/* Header Structure */}
-      <div className="header-structure">
-        {headers.map((header, index) => (
-          <div
-            key={index}
-            className={`header-content header-${header.tag}`}
-          >
-            <span className="dashed-line"></span> 
-            <strong><span className="header-tag">{header.tag}</span></strong>
-            <span className="header-text">{header.text}</span>
+            <span>{key.toUpperCase()}</span>
+            <span>{headerCounts[key] || 0}</span>
           </div>
         ))}
       </div>
+      {isEmpty ? (
+        <div className="no-items" id="no-headers">
+          <p>No Headers Found on this Website.</p>
+          <img src="notfound.svg" alt="Not Found" />
+        </div>
+      ) : (
+        <div className="header-structure">
+          {headers.map((header, index) => (
+            <div key={index} className={`header-content header-${header.tag}`}>
+              <span className="dashed-line"></span>
+              <strong>
+                <span className="header-tag">{header.tag}</span>
+              </strong>
+              <span className="header-text">{header.text}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 export default Headers;
-

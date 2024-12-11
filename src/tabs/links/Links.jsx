@@ -8,7 +8,10 @@ const Links = () => {
 
   useEffect(() => {
     const fetchLinks = async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
       const tabId = tab.id;
 
       chrome.scripting.executeScript(
@@ -26,10 +29,13 @@ const Links = () => {
 
             const internal = links.filter((link) => link.href.startsWith(url));
             const external = links.filter((link) => !link.href.startsWith(url));
-            const unique = [...new Set(links.map((link) => link.href))].map((href) => ({
-              href,
-              title: links.find((link) => link.href === href)?.title || "No title",
-            }));
+            const unique = [...new Set(links.map((link) => link.href))].map(
+              (href) => ({
+                href,
+                title:
+                  links.find((link) => link.href === href)?.title || "No title",
+              })
+            );
 
             return {
               total: links,
@@ -51,7 +57,7 @@ const Links = () => {
 
   const exportToCSV = () => {
     const csvRows = [];
-    csvRows.push("URL,Title"); 
+    csvRows.push("URL,Title");
     links[view]?.forEach(({ href, title }) => {
       csvRows.push(`"${href}","${title}"`);
     });
@@ -70,7 +76,7 @@ const Links = () => {
     <div className="active-tab-container">
       <h2>Links</h2>
       {loading ? (
-        <img className="loading" src='loading.gif' alt='Loading'></img>
+        <img className="loading" src="loading.gif" alt="Loading"></img>
       ) : (
         <>
           <div className="link-counts">
@@ -95,51 +101,70 @@ const Links = () => {
           <div className="filter-buttons">
             <button
               className={view === "total" ? "active" : ""}
-              onClick={() => setView("total")}>
+              onClick={() => setView("total")}
+            >
               Total
             </button>
             <button
               className={view === "internal" ? "active" : ""}
-              onClick={() => setView("internal")}>
+              onClick={() => setView("internal")}
+            >
               Internal
             </button>
             <button
               className={view === "external" ? "active" : ""}
-              onClick={() => setView("external")}>
+              onClick={() => setView("external")}
+            >
               External
             </button>
             <button
               className={view === "unique" ? "active" : ""}
-              onClick={() => setView("unique")}>
+              onClick={() => setView("unique")}
+            >
               Unique
             </button>
-            <button className="link-export-button" onClick={exportToCSV}>Export</button>
+            <button className="link-export-button" onClick={exportToCSV}>
+              Export
+            </button>
           </div>
 
           <div className="links-table">
-            {links[view]?.map((link, index) => (
-              <React.Fragment key={index}>
-                <div className="link-details">
-                  <p>
-                    <strong>URL:</strong> 
-                    <a href={link.href} className="link-url" target="_blank" rel="noopener noreferrer">
-                      {link.href}
-                    </a>
-                  </p>
-                  <p>
-                    <strong>Title:</strong> {link.title}
-                  </p>
-                </div>
-                <div className="link-count">
-                <p>
-                  <strong>Count:</strong>{" "}
-                  {
-                    links.total?.filter((l) => l.href === link.href).length || 0
-                  }
-                </p>
-                </div>
+            {links[view]?.length > 0 ? (
+              links[view].map((link, index) => (
+                <React.Fragment key={index}>
+                  <div className="link-details">
+                    <p>
+                      <strong>URL:</strong>
+                      <a
+                        href={link.href}
+                        className="link-url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {link.href}
+                      </a>
+                    </p>
+                    <p>
+                      <strong>Title:</strong> {link.title}
+                    </p>
+                  </div>
+                  <div className="link-count">
+                    <p>
+                      <strong>Count:</strong>{" "}
+                      {links.total?.filter((l) => l.href === link.href)
+                        .length || 0}
+                    </p>
+                  </div>
                 </React.Fragment>
-            ))}
+              ))
+            ) : (
+              <div className="no-items" id="no-links">
+                <p>
+                  No Links to show in this <br /> Category
+                </p>
+                <img src="notfound.svg" alt="Not Found" />
+              </div>
+            )}
           </div>
         </>
       )}
@@ -148,16 +173,3 @@ const Links = () => {
 };
 
 export default Links;
-
-
-
-
-
-
-
-
-
-
-
-
-

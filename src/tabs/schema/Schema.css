@@ -1,4 +1,4 @@
-.schema-description{
+.schema-description {
   font-size: 1rem;
 }
 
@@ -6,6 +6,7 @@
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  position: relative;
   gap: 10px;
 }
 
@@ -49,4 +50,10 @@
   color: white;
   font-size: 16px;
   cursor: pointer;
+}
+
+#no-schema {
+  margin-top: 100px;
+  justify-content: space-around;
+  color: rgba(225, 91, 14, 0.84);
 }

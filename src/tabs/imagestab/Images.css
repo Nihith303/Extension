@@ -1,4 +1,4 @@
- .image-counts {
+.image-counts {
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -6,18 +6,17 @@
   background-color: #f9f9f9;
 }
 
-
 .image-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  width: 150px; 
-  height: 100px; 
-  border: 1px solid #ddd; 
-  border-radius: 8px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  width: 150px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 1rem;
 }
 
@@ -31,7 +30,7 @@
 .image-item span:last-child {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #007BFF; 
+  color: #007bff;
 }
 
 .image-nav {
@@ -69,13 +68,12 @@
   grid-template-columns: 2fr 1fr;
   gap: 10px;
   padding: 10px;
-  max-height: calc(100vh - 200px); 
-  overflow: auto; 
+  max-height: calc(100vh - 200px);
+  overflow: auto;
   box-sizing: border-box;
   background-color: #f9f9f9;
   position: relative;
 }
-
 
 .image-preview {
   position: relative;
@@ -90,7 +88,7 @@
 }
 
 .image-preview:hover img {
-  transform: scale(1.5); 
+  transform: scale(1.5);
   z-index: 1000;
   position: absolute;
 }
@@ -108,17 +106,16 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-
 .image-details {
-  padding: 10px 6px; 
+  padding: 10px 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #ffffff;
-  word-wrap: break-word; 
-  max-width: 100%; 
-  box-sizing: border-box; 
-  overflow: hidden; 
-  text-overflow: ellipsis; 
+  word-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-size: 14px;
 }
 
@@ -127,10 +124,20 @@
   font-size: 14px;
 }
 
-.image-url{
-  color: #0000FF;
+.image-url {
+  color: #0000ff;
 }
 
-.image-url:hover{
+.image-url:hover {
   text-decoration: underline;
+}
+
+.no-items {
+  display: flex;
+  font-size: 1.2rem !important;
+  font-weight: bold;
+  color: #f30f0fbe;
+  text-align: center;
+  margin: 2rem 0px;
+  width: 100%;
 }

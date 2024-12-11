@@ -6,7 +6,10 @@ const SchemaViewer = () => {
 
   useEffect(() => {
     const fetchSchemas = async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
       const tabId = tab.id;
 
       chrome.scripting.executeScript(
@@ -16,7 +19,15 @@ const SchemaViewer = () => {
             const schemaScripts = Array.from(
               document.querySelectorAll('script[type="application/ld+json"]')
             );
-            return schemaScripts.map((script) => JSON.parse(script.innerText));
+            return schemaScripts
+              .map((script) => {
+                try {
+                  return JSON.parse(script.innerText);
+                } catch {
+                  return null;
+                }
+              })
+              .filter(Boolean);
           },
         },
         ([result]) => {
@@ -31,14 +42,28 @@ const SchemaViewer = () => {
   return (
     <div>
       <h2>Schema</h2>
-      <p className="schema-description"><strong>
-        Schema Markup is a semantic vocabulary of tags that helps search engines
-        understand your webpage and better represent it in the search results.</strong>
+      <p className="schema-description">
+        <strong>
+          Schema Markup is a semantic vocabulary of tags that helps search
+          engines understand your webpage and better represent it in the search
+          results.
+        </strong>
       </p>
       <div className="schema-container">
-        {schemas.map((schema, index) => (
-          <SchemaItem key={index} data={schema} title={schema["@type"] || `Schema ${index + 1}`} />
-        ))}
+        {schemas.length > 0 ? (
+          schemas.map((schema, index) => (
+            <SchemaItem
+              key={index}
+              data={schema}
+              title={schema["@type"] || `Schema ${index + 1}`}
+            />
+          ))
+        ) : (
+          <div className="no-items" id="no-schema">
+            <p>No Schema Found on this Website.</p>
+            <img src="notfound.svg" alt="Not Found" />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -51,7 +76,6 @@ const SchemaItem = ({ data, title }) => {
 
   const renderValue = (key, value) => {
     if (typeof value === "object" && value !== null) {
-      // Pass the type of the nested object as the title
       return <SchemaItem data={value} title={value["@type"] || key} />;
     }
     return (

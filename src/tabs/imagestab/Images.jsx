@@ -13,23 +13,30 @@ const Image = () => {
 
   useEffect(() => {
     const fetchImages = async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      const [tab] = await chrome.tabs.query({
+        active: true,
+        currentWindow: true,
+      });
       const tabId = tab.id;
 
       chrome.scripting.executeScript(
         {
           target: { tabId },
           func: () => {
-            const images = Array.from(document.querySelectorAll("img")).map((img) => ({
-              src: img.src || "No SRC",
-              alt: img.alt || "No ALT",
-              longDesc: img.longdesc || "No Description",
-              width: img.naturalWidth || "N/A",
-              height: img.naturalHeight || "N/A",
-            }));
+            const images = Array.from(document.querySelectorAll("img")).map(
+              (img) => ({
+                src: img.src || "No SRC",
+                alt: img.alt || "No ALT",
+                longDesc: img.longdesc || "No Description",
+                width: img.naturalWidth || "N/A",
+                height: img.naturalHeight || "N/A",
+              })
+            );
 
             const noAlt = images.filter((img) => img.alt === "No ALT");
-            const noLongDesc = images.filter((img) => img.longDesc === "No Description");
+            const noLongDesc = images.filter(
+              (img) => img.longDesc === "No Description"
+            );
             const noSrc = images.filter((img) => img.src === "No SRC");
 
             return {
@@ -74,7 +81,7 @@ const Image = () => {
       newTab.document.body.innerHTML = `
         <div style="text-align: center; margin: 20px;">
           <img src="${imgSrc}" alt="Full Image" style="max-width: 100%; height: auto; margin-bottom: 20px;"/><br/>
-          <a href="${imgSrc}" download="${imgSrc.split('/').pop()}" 
+          <a href="${imgSrc}" download="${imgSrc.split("/").pop()}" 
             style="display: inline-block; padding: 10px 20px; background-color: #0056b3; color: white; text-decoration: none; border-radius: 5px;">
             Download
           </a>
@@ -87,7 +94,7 @@ const Image = () => {
     <div className="active-tab-container">
       <h2>Images</h2>
       {loading ? (
-        <img src='loading.gif' alt='Loading' className='loading'></img>
+        <img src="loading.gif" alt="Loading" className="loading"></img>
       ) : (
         <>
           <div className="image-counts">
@@ -111,34 +118,52 @@ const Image = () => {
           <div className="image-nav">
             <button onClick={() => setView("total")}>Total</button>
             <button onClick={() => setView("noAlt")}>No ALT</button>
-            <button onClick={() => setView("noLongDesc")}>No Description</button>
+            <button onClick={() => setView("noLongDesc")}>
+              No Description
+            </button>
             <button onClick={() => setView("noSrc")}>No SRC</button>
             <button className="export-button" onClick={exportCSV}>
               Export
             </button>
           </div>
           <div className="images-table">
-            {images[view].map((img, index) => (
-              <React.Fragment key={index}>
-                <div className="image-details">
-                  <p onClick={() => handleImageClick(img.src)}><strong>URL:</strong> <span className="image-url">{img.src}</span></p>
-                  <p><strong>ALT:</strong> {img.alt}</p>
-                  <p><strong>Description:</strong> {img.longDesc}</p>
-                </div>
-                <div className="image-preview">
-                  {img.src !== "No SRC" ? (
-                    <img
-                      src={img.src}
-                      alt="Preview"
-                      onClick={() => handleImageClick(img.src)}
-                    />
-                  ) : (
-                    <p>No SRC</p>
-                  )}
-                  <p>{img.width}x{img.height}</p>
-                </div>
-              </React.Fragment>
-            ))}
+            {images[view].length === 0 ? (
+              <div className="no-items">
+                <p>No Images to show in this Category</p>
+                <img src="notfound.svg" alt="Not Found" />
+              </div>
+            ) : (
+              images[view].map((img, index) => (
+                <React.Fragment key={index}>
+                  <div className="image-details">
+                    <p onClick={() => handleImageClick(img.src)}>
+                      <strong>URL:</strong>{" "}
+                      <span className="image-url">{img.src}</span>
+                    </p>
+                    <p>
+                      <strong>ALT:</strong> {img.alt}
+                    </p>
+                    <p>
+                      <strong>Description:</strong> {img.longDesc}
+                    </p>
+                  </div>
+                  <div className="image-preview">
+                    {img.src !== "No SRC" ? (
+                      <img
+                        src={img.src}
+                        alt="Preview"
+                        onClick={() => handleImageClick(img.src)}
+                      />
+                    ) : (
+                      <p>No SRC</p>
+                    )}
+                    <p>
+                      {img.width}x{img.height}
+                    </p>
+                  </div>
+                </React.Fragment>
+              ))
+            )}
           </div>
         </>
       )}

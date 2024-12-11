@@ -1,50 +1,54 @@
 import React, { useEffect, useState } from "react";
-import './Summary.css';
+import "./Summary.css";
 
-const Summary = () => {
-  const [info, setInfo] = useState({});
-  const [loading, setLoading] = useState(true);
+const Summary = ({ data, saveData }) => {
+  const [info, setInfo] = useState(data || {}); 
+  const [loading, setLoading] = useState(!data); 
 
   useEffect(() => {
-    const fetchWebsiteInfo = async () => {
-      const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-      const tabId = tab.id;
+    if (!data) {
+      const fetchWebsiteInfo = async () => {
+        const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+        const tabId = tab.id;
 
-      chrome.scripting.executeScript(
-        {
-          target: { tabId },
-          func: () => {
-            const meta = (name) => document.querySelector(`meta[name="${name}"]`)?.content;
-            const robotsMeta = document.querySelector('meta[name="robots"]')?.content || "N/A";
-            const xRobotsMeta = document.querySelector('meta[http-equiv="X-Robots-Tag"]')?.content || "N/A";
-            const lang = document.documentElement.lang || "N/A";
+        chrome.scripting.executeScript(
+          {
+            target: { tabId },
+            func: () => {
+              const meta = (name) => document.querySelector(`meta[name="${name}"]`)?.content;
+              const robotsMeta = document.querySelector("meta[name=\"robots\"]")?.content || "N/A";
+              const xRobotsMeta = document.querySelector("meta[http-equiv=\"X-Robots-Tag\"]")?.content || "N/A";
+              const lang = document.documentElement.lang || "N/A";
 
-            return {
-              title: document.title,
-              description: meta("description") || "N/A",
-              canonical: document.querySelector('link[rel="canonical"]')?.href || "N/A",
-              robots: robotsMeta,
-              xRobots: xRobotsMeta,
-              lang: lang,
-              url: window.location.href,
-            };
+              return {
+                title: document.title,
+                description: meta("description") || "N/A",
+                canonical: document.querySelector("link[rel=\"canonical\"]")?.href || "N/A",
+                robots: robotsMeta,
+                xRobots: xRobotsMeta,
+                lang: lang,
+                url: window.location.href,
+              };
+            },
           },
-        },
-        ([result]) => {
-          setInfo(result.result);
-          setLoading(false);
-        }
-      );
-    };
+          ([result]) => {
+            const fetchedData = result.result;
+            setInfo(fetchedData);
+            saveData(fetchedData); 
+            setLoading(false);
+          }
+        );
+      };
 
-    fetchWebsiteInfo();
-  }, []);
+      fetchWebsiteInfo();
+    }
+  }, [data, saveData]);
 
   return (
-    <div>
+    <div className="active-tab-container">
       <h2>Summary</h2>
       {loading ? (
-        <p>Loading...</p>
+        <img src='loading.gif' alt='Loading' className='loading'></img>
       ) : (
         <div className="info">
           <p><strong>Title:</strong> {info.title}</p>
