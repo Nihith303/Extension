@@ -72,8 +72,7 @@ const PageSpeedTest = () => {
           className="score-circle"
           style={{
             background: `conic-gradient(${scoreColor} ${score}%, #f3f3f3 ${score}%)`,
-          }}
-        >
+          }}>
           <span>{score}</span>
         </div>
         <p className="circle-label">{strategy} PageSpeed</p>
@@ -91,6 +90,11 @@ const PageSpeedTest = () => {
       <button onClick={runTest} disabled={isLoading}>
         {isLoading ? "Running Test..." : "Run Speed Test"}
       </button>
+      {isLoading && (
+        <div className='active-tab-container'>
+          <img src="loading.gif" alt="Loading" className="loading"/>
+        </div>
+      )}
       {error && <p className="error">{error}</p>}
 
       <div className="score-container">

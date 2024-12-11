@@ -49,7 +49,6 @@ const Links = () => {
     fetchLinks();
   }, []);
 
-  // Function to handle exporting links to CSV
   const exportToCSV = () => {
     const csvRows = [];
     csvRows.push("URL,Title"); 
@@ -68,13 +67,12 @@ const Links = () => {
   };
 
   return (
-    <div>
+    <div className="active-tab-container">
       <h2>Links</h2>
       {loading ? (
-        <p>Loading...</p>
+        <img className="loading" src='loading.gif' alt='Loading'></img>
       ) : (
         <>
-          {/* Link counts */}
           <div className="link-counts">
             <div className="link-item">
               <span>Total Links</span>
@@ -94,7 +92,6 @@ const Links = () => {
             </div>
           </div>
 
-          {/* Filter buttons */}
           <div className="filter-buttons">
             <button
               className={view === "total" ? "active" : ""}
@@ -119,7 +116,6 @@ const Links = () => {
             <button className="link-export-button" onClick={exportToCSV}>Export</button>
           </div>
 
-           {/* Links table  */}
           <div className="links-table">
             {links[view]?.map((link, index) => (
               <React.Fragment key={index}>
@@ -152,3 +148,16 @@ const Links = () => {
 };
 
 export default Links;
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -84,10 +84,10 @@ const Image = () => {
   };
 
   return (
-    <div>
+    <div className="active-tab-container">
       <h2>Images</h2>
       {loading ? (
-        <p>Loading...</p>
+        <img src='loading.gif' alt='Loading' className='loading'></img>
       ) : (
         <>
           <div className="image-counts">
