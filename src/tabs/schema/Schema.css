@@ -57,3 +57,47 @@
   justify-content: space-around;
   color: rgba(225, 91, 14, 0.84);
 }
+
+.graph-container {
+  width: 100%;
+  height: 350px;
+  border: 1px solid #ccc;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.no-items {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.controls {
+  position: absolute;
+  top: 150px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.controls label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+}
+
+.controls input {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.tooltip {
+  font-size: 12px;
+  pointer-events: none;
+  position: absolute;
+  visibility: hidden;
+  z-index: 10;
+}

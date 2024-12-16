@@ -94,7 +94,7 @@ const Image = () => {
     <div className="active-tab-container">
       <h2>Images</h2>
       {loading ? (
-        <img src="loading.gif" alt="Loading" className="loading"></img>
+        <img src="image/loading.gif" alt="Loading" className="loading"></img>
       ) : (
         <>
           <div className="image-counts">
@@ -130,7 +130,7 @@ const Image = () => {
             {images[view].length === 0 ? (
               <div className="no-items">
                 <p>No Images to show in this Category</p>
-                <img src="notfound.svg" alt="Not Found" />
+                <img src="image/notfound.svg" alt="Not Found" />
               </div>
             ) : (
               images[view].map((img, index) => (

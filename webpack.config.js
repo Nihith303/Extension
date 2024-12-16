@@ -1,4 +1,5 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: {
@@ -6,7 +7,7 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, "public"),
-    filename: "[name].js",
+    filename: "js/[name].js",
   },
   module: {
     rules: [
@@ -16,18 +17,40 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              ["@babel/preset-env", { targets: "defaults" }],
+              "@babel/preset-react",
+            ],
+            plugins: ["@babel/plugin-transform-runtime"],
           },
         },
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
     ],
   },
-  resolve: {
-    extensions: [".js", ".jsx"],
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "css/[name].css",
+    }),
+  ],
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: "vendors",
+          chunks: "all",
+        },
+      },
+    },
   },
+  resolve: {
+    extensions: [".js", ".jsx", ".css"],
+  },
+  devtool: "source-map",
   mode: "production",
 };

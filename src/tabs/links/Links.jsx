@@ -76,7 +76,7 @@ const Links = () => {
     <div className="active-tab-container">
       <h2>Links</h2>
       {loading ? (
-        <img className="loading" src="loading.gif" alt="Loading"></img>
+        <img className="loading" src="image/loading.gif" alt="Loading"></img>
       ) : (
         <>
           <div className="link-counts">
@@ -162,7 +162,7 @@ const Links = () => {
                 <p>
                   No Links to show in this <br /> Category
                 </p>
-                <img src="notfound.svg" alt="Not Found" />
+                <img src="image/notfound.svg" alt="Not Found" />
               </div>
             )}
           </div>

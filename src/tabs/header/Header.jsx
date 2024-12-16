@@ -73,7 +73,7 @@ const Headers = () => {
       {isEmpty ? (
         <div className="no-items" id="no-headers">
           <p>No Headers Found on this Website.</p>
-          <img src="notfound.svg" alt="Not Found" />
+          <img src="image/notfound.svg" alt="Not Found" />
         </div>
       ) : (
         <div className="header-structure">

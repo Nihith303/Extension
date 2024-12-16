@@ -9,7 +9,10 @@ const PageSpeedTest = () => {
   const [error, setError] = useState("");
 
   const getActiveTabUrl = async () => {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
     return tab.url;
   };
 
@@ -45,7 +48,7 @@ const PageSpeedTest = () => {
   };
 
   const getScoreColor = (score) => {
-    if (score >= 90) return "#4caf50";
+    if (score >= 85) return "#4caf50";
     if (score >= 50) return "#ffc107";
     return "#f44336";
   };
@@ -54,10 +57,22 @@ const PageSpeedTest = () => {
     const audits = result.audits;
     return (
       <div className="metrics">
-        <p><strong>First Contentful Paint:</strong> {audits["first-contentful-paint"].displayValue}</p>
-        <p><strong>Largest Contentful Paint:</strong> {audits["largest-contentful-paint"].displayValue}</p>
-        <p><strong>Total Blocking Time:</strong> {audits["total-blocking-time"].displayValue}</p>
-        <p><strong>Cumulative Layout Shift:</strong> {audits["cumulative-layout-shift"].displayValue}</p>
+        <p>
+          <strong>First Contentful Paint:</strong>{" "}
+          {audits["first-contentful-paint"].displayValue}
+        </p>
+        <p>
+          <strong>Largest Contentful Paint:</strong>{" "}
+          {audits["largest-contentful-paint"].displayValue}
+        </p>
+        <p>
+          <strong>Total Blocking Time:</strong>{" "}
+          {audits["total-blocking-time"].displayValue}
+        </p>
+        <p>
+          <strong>Cumulative Layout Shift:</strong>{" "}
+          {audits["cumulative-layout-shift"].displayValue}
+        </p>
       </div>
     );
   };
@@ -71,15 +86,18 @@ const PageSpeedTest = () => {
         <div
           className="score-circle"
           style={{
-            background: `conic-gradient(${scoreColor} ${score}%, #f3f3f3 ${score}%)`,
-          }}>
+            backgroundColor: `white`,
+            backgroundImage: `conic-gradient(${scoreColor} ${score}%, #f3f3f3 ${score}%)`,
+          }}
+        >
           <span>{score}</span>
         </div>
         <p className="circle-label">{strategy} PageSpeed</p>
         <p className="url-text">
-          Google PageSpeed Insights for <br /> <span className="url">{url}</span>
+          Google PageSpeed Insights for <br />{" "}
+          <span className="url">{url}</span>
         </p>
-        {renderMetrics(result)} 
+        {renderMetrics(result)}
       </div>
     );
   };
@@ -91,8 +109,9 @@ const PageSpeedTest = () => {
         {isLoading ? "Running Test..." : "Run Speed Test"}
       </button>
       {isLoading && (
-        <div className='active-tab-container'>
-          <img src="loading.gif" alt="Loading" className="loading"/>
+        <div className="active-tab-container">
+          <p>It Might Take a While to Process</p>
+          <img src="image/loading.gif" alt="Loading" className="loading" />
         </div>
       )}
       {error && <p className="error">{error}</p>}
@@ -105,13 +124,16 @@ const PageSpeedTest = () => {
       {desktopResult && mobileResult && (
         <div className="legend">
           <div>
-            <span className="legend-color green"></span><strong>Good</strong>
+            <span className="legend-color green"></span>
+            <strong>Good</strong>
           </div>
           <div>
-            <span className="legend-color yellow"></span><strong>Can Be Better</strong>
+            <span className="legend-color yellow"></span>
+            <strong>Can Be Better</strong>
           </div>
           <div>
-            <span className="legend-color red"></span><strong>Need to Be Updated</strong>
+            <span className="legend-color red"></span>
+            <strong>Need to Be Updated</strong>
           </div>
         </div>
       )}
