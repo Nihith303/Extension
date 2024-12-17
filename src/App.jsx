@@ -7,7 +7,7 @@ import Header from "./tabs/header/Header";
 import Schema from "./tabs/schema/Schema";
 import PageSpeedTest from "./tabs/pagespeed/PageSpeed";
 import Footer from "./components/footer/Footer";
-import "./App.css"; 
+import "./App.css";
 
 const App = () => {
   const [activeTab, setActiveTab] = useState("summary");
@@ -16,7 +16,6 @@ const App = () => {
     <div className="app-container">
       <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="app-content">
-
         {activeTab === "summary" && <Summary />}
         {activeTab === "links" && <Links />}
         {activeTab === "images" && <Images />}
@@ -32,12 +31,6 @@ const App = () => {
 
 export default App;
 
-
-
-
-
-
-
 // import React, { useState, useEffect } from "react";
 // import TabNavigation from "./components/navigator/TabNavigation";
 // import Summary from "./tabs/summary/Summary";
@@ -51,6 +44,8 @@ export default App;
 
 // const App = () => {
 //   const [activeTab, setActiveTab] = useState("summary");
+
+//   // State to track all tabs data
 //   const [tabData, setTabData] = useState({
 //     summary: null,
 //     links: null,
@@ -59,12 +54,15 @@ export default App;
 //     schema: null,
 //     pagespeedtest: null,
 //   });
+
+//   // Load data from chrome.storage when the app is initialized
 //   useEffect(() => {
 //     chrome.storage.local.get(null, (data) => {
 //       setTabData((prev) => ({ ...prev, ...data }));
 //     });
 //   }, []);
 
+//   // Save activeTab data to chrome.storage
 //   const saveTabData = (tabName, data) => {
 //     setTabData((prev) => ({ ...prev, [tabName]: data }));
 //     chrome.storage.local.set({ [tabName]: data });
