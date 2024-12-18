@@ -7,6 +7,7 @@ import Header from "./tabs/header/Header";
 import Schema from "./tabs/schema/Schema";
 import PageSpeedTest from "./tabs/pagespeed/PageSpeed";
 import Footer from "./components/footer/Footer";
+import DownloadPdf from "./components/downloadpdf/Downloadpdf";
 import "./App.css";
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
   return (
     <div className="app-container">
       <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <DownloadPdf />
       <div className="app-content">
         {activeTab === "summary" && <Summary />}
         {activeTab === "links" && <Links />}
