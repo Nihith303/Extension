@@ -9,7 +9,7 @@ const SchemaViewer = () => {
   const [nodeSize, setNodeSize] = useState(8);
   const [isDragEnabled, setIsDragEnabled] = useState(true);
   const graphRef = useRef(null);
-  const simulationRef = useRef(null); // Reference to the simulation
+  const simulationRef = useRef(null);
 
   // Drag functionality
   const drag = (simulation) => {

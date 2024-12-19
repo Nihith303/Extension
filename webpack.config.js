@@ -51,6 +51,14 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx", ".css"],
   },
+  performance: {
+    hints: "warning",
+    maxAssetSize: 1000000,
+    maxEntrypointSize: 4000000,
+    assetFilter: (assetFilename) => {
+      return assetFilename.endsWith(".js") || assetFilename.endsWith(".css");
+    },
+  },
   devtool: "source-map",
   mode: "production",
 };

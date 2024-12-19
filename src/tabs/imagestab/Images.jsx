@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Images.css";
+import { fetchImages } from "../utils/fetchImages";
 
 const Image = () => {
   const [images, setImages] = useState({
@@ -12,49 +13,23 @@ const Image = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      const [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
-      const tabId = tab.id;
-
-      chrome.scripting.executeScript(
-        {
-          target: { tabId },
-          func: () => {
-            const images = Array.from(document.querySelectorAll("img")).map(
-              (img) => ({
-                src: img.src || "No SRC",
-                alt: img.alt || "No ALT",
-                longDesc: img.longdesc || "No Description",
-                width: img.naturalWidth || "N/A",
-                height: img.naturalHeight || "N/A",
-              })
-            );
-
-            const noAlt = images.filter((img) => img.alt === "No ALT");
-            const noLongDesc = images.filter(
-              (img) => img.longDesc === "No Description"
-            );
-            const noSrc = images.filter((img) => img.src === "No SRC");
-
-            return {
-              total: images,
-              noAlt,
-              noLongDesc,
-              noSrc,
-            };
-          },
-        },
-        ([result]) => {
-          setImages(result.result);
-          setLoading(false);
-        }
-      );
+    const fetchImageData = async () => {
+      try {
+        const [tab] = await chrome.tabs.query({
+          active: true,
+          currentWindow: true,
+        });
+        const tabId = tab.id;
+        const imagesData = await fetchImages(tabId);
+        setImages(imagesData);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchImages();
+    fetchImageData();
   }, []);
 
   const exportCSV = () => {

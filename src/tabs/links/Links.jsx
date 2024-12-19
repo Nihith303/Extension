@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchLinks } from "../utils/fetchLinks";
 import "./Links.css";
 
 const Links = () => {
@@ -7,67 +8,36 @@ const Links = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchLinks = async () => {
-      const [tab] = await chrome.tabs.query({
-        active: true,
-        currentWindow: true,
-      });
-      const tabId = tab.id;
-
-      chrome.scripting.executeScript(
-        {
-          target: { tabId },
-          func: () => {
-            const links = Array.from(document.querySelectorAll("a"))
-              .map((a) => ({
-                href: a.href,
-                title: a.textContent.trim() || "No title",
-              }))
-              .filter((link) => link.href);
-
-            const url = window.location.origin;
-
-            const internal = links.filter((link) => link.href.startsWith(url));
-            const external = links.filter((link) => !link.href.startsWith(url));
-            const unique = [...new Set(links.map((link) => link.href))].map(
-              (href) => ({
-                href,
-                title:
-                  links.find((link) => link.href === href)?.title || "No title",
-              })
-            );
-
-            return {
-              total: links,
-              internal,
-              external,
-              unique,
-            };
-          },
-        },
-        ([result]) => {
-          setLinks(result.result);
-          setLoading(false);
-        }
-      );
+    const getLinks = async () => {
+      try {
+        const data = await fetchLinks();
+        setLinks(data);
+      } catch (error) {
+        console.error("Error fetching links:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchLinks();
+    getLinks();
   }, []);
 
   const exportToCSV = () => {
     const csvRows = [];
-    csvRows.push("URL,Title");
-    links[view]?.forEach(({ href, title }) => {
-      csvRows.push(`"${href}","${title}"`);
+    csvRows.push("URL,Title,Category,Count");
+    ["internal", "external"].forEach((category) => {
+      links[category]?.forEach(({ href, title }) => {
+        const count =
+          links.total?.filter((link) => link.href === href).length || 0;
+        csvRows.push(`"${href}","${title}","${category}","${count}"`);
+      });
     });
-
     const csvContent = csvRows.join("\n");
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${view}-links.csv`;
+    a.download = `links.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -124,7 +94,7 @@ const Links = () => {
               Unique
             </button>
             <button className="link-export-button" onClick={exportToCSV}>
-              Export
+              Export Links
             </button>
           </div>
 

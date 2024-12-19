@@ -1,9 +1,17 @@
 #downloadbutton {
-  background-color: #28a745;
-  color: #ffffff;
+  background-color: #f1caca;
+  color: #1d1919;
+  width: 80%;
 }
 
 #downloadbutton:hover {
-  color: #28a745;
-  background-color: #ffffff;
+  color: #f1caca;
+  background-color: #1d1919;
+  transform: scale(1.1);
+}
+
+#downloadbutton:active {
+  color: #1d1919;
+  background-color: #ecbcbc;
+  transform: scale(0.98);
 }
