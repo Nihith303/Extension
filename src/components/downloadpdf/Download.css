@@ -11,7 +11,9 @@
 }
 
 #downloadbutton:active {
-  color: #1d1919;
-  background-color: #ecbcbc;
   transform: scale(0.98);
+}
+
+#noref {
+  opacity: 0;
 }
