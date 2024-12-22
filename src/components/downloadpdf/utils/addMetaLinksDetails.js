@@ -1,4 +1,16 @@
-export const addMetaLinksDetails = (doc, metaLinks, startPosition) => {
+export const addMetaLinksDetails = (doc, info, startPosition) => {
+  const metaLinks = [
+    { label: "Title", value: info.title },
+    { label: "Description", value: info.description },
+    { label: "Canonical", value: info.canonical },
+    { label: "URL", value: info.url },
+    { label: "Language", value: info.lang },
+    { label: "Robots Meta", value: info.robots },
+    { label: "X-Robots Meta", value: info.xRobots },
+  ];
+  // Title of the Report.
+  doc.setFontSize(16);
+  doc.text("Website SEO Report", 105, 10, { align: "center" });
   doc.setFontSize(14);
   doc.text("Meta Links Data", 10, startPosition);
   let yPosition = startPosition + 10;

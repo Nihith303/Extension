@@ -100,67 +100,73 @@ const Schema = () => {
   };
 
   return (
-    <div>
-      <div className="container">
-        <h2>Schema Visualizer</h2>
-        <button
-          onClick={() => setIsDragEnabled((prev) => !prev)}
-          id="pause-play"
-        >
-          {isDragEnabled ? (
-            <img src="image/pause.svg" alt="Pause button" />
-          ) : (
-            <img src="image/play.svg" alt="Play button" />
-          )}
-        </button>
-        <button onClick={() => downloadGraphAsPng(graphRef)} id="download-btn">
-          <img src="image/download.svg" alt="Download Graph" />
-        </button>
+    <>
+      {schemas.length > 0 && (
+        <div>
+          <div className="container">
+            <h2>Schema Visualizer</h2>
+            <button
+              onClick={() => setIsDragEnabled((prev) => !prev)}
+              id="pause-play"
+            >
+              {isDragEnabled ? (
+                <img src="image/pause.svg" alt="Pause button" />
+              ) : (
+                <img src="image/play.svg" alt="Play button" />
+              )}
+            </button>
+            <button
+              onClick={() => downloadGraphAsPng(graphRef)}
+              id="download-btn"
+            >
+              <img src="image/download.svg" alt="Download Graph" />
+            </button>
 
-        <div className="controls">
-          <div className="control-item">
-            <label>Font Size</label>
-            <input
-              type="range"
-              min="8"
-              max="30"
-              value={fontSize}
-              onChange={(e) => setFontSize(Number(e.target.value))}
-            />
-            <span>{fontSize}</span>
+            <div className="controls">
+              <div className="control-item">
+                <label>Font Size</label>
+                <input
+                  type="range"
+                  min="8"
+                  max="30"
+                  value={fontSize}
+                  onChange={(e) => setFontSize(Number(e.target.value))}
+                />
+                <span>{fontSize}</span>
+              </div>
+              <div className="control-item">
+                <label>Node Size</label>
+                <input
+                  type="range"
+                  min="5"
+                  max="50"
+                  value={nodeSize}
+                  onChange={(e) => setNodeSize(Number(e.target.value))}
+                />
+                <span>{nodeSize}</span>
+              </div>
+              <div className="control-item">
+                <label>Link Distance</label>
+                <input
+                  type="range"
+                  min="20"
+                  max="200"
+                  value={linkDistance}
+                  onChange={(e) => setLinkDistance(Number(e.target.value))}
+                />
+                <span>{linkDistance}</span>
+              </div>
+            </div>
           </div>
-          <div className="control-item">
-            <label>Node Size</label>
-            <input
-              type="range"
-              min="5"
-              max="50"
-              value={nodeSize}
-              onChange={(e) => setNodeSize(Number(e.target.value))}
-            />
-            <span>{nodeSize}</span>
-          </div>
-          <div className="control-item">
-            <label>Link Distance</label>
-            <input
-              type="range"
-              min="20"
-              max="200"
-              value={linkDistance}
-              onChange={(e) => setLinkDistance(Number(e.target.value))}
-            />
-            <span>{linkDistance}</span>
-          </div>
+          <div ref={graphRef} className="graph-container"></div>
         </div>
-      </div>
-      {schemas.length > 0 ? (
-        <div ref={graphRef} className="graph-container"></div>
-      ) : (
+      )}
+      {schemas.length === 0 && (
         <div className="no-items">
           <p>No Schema Found on this Website.</p>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

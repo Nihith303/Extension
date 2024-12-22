@@ -1,17 +1,10 @@
-// import { jsPDF } from "jspdf";
-export const downloadGraphAsPng = (graphRef) => {
-  // const doc = new jsPDF();
-
+export const downloadGraphAsPdf = (doc, graphRef, startPosition, title) => {
   // Get the SVG element and convert it to an image URL (PNG)
   const svgElement = graphRef.current.querySelector("svg");
-  if (!svgElement) return;
-
-  // const imageUrl = svgElement.toDataURL("image/png");
-
-  // Add the image to the PDF document (you can adjust the coordinates and dimensions)
-
-  // const svgElement = graphRef.current.querySelector("svg");
-  // if (!svgElement) return;
+  if (!svgElement) {
+    doc.save(`Digispot.AI SEOAudit report-${title || "Website"}.pdf`);
+    return;
+  }
 
   const clonedSvg = svgElement.cloneNode(true);
   const bbox = svgElement.getBBox();
@@ -39,16 +32,41 @@ export const downloadGraphAsPng = (graphRef) => {
     ctx.drawImage(img, 0, 0, width * scaleFactor, height * scaleFactor);
 
     const link = document.createElement("a");
-    link.download = "schema-graph.png";
     link.href = canvas.toDataURL("image/png");
-    link.click();
+    const maxWidth = 180;
+    const maxHeight = 200;
+    let imgWidth = width;
+    let imgHeight = height;
+    const aspectRatio = imgWidth / imgHeight;
+
+    if (imgWidth > maxWidth || imgHeight > maxHeight) {
+      if (imgWidth / maxWidth > imgHeight / maxHeight) {
+        imgWidth = maxWidth;
+        imgHeight = maxWidth / aspectRatio;
+      } else {
+        imgHeight = maxHeight;
+        imgWidth = maxHeight * aspectRatio;
+      }
+    }
+
+    const pageWidth = doc.internal.pageSize.width;
+    const x = (pageWidth - imgWidth) / 2;
+    const pageHeight = doc.internal.pageSize.height;
+
+    if (startPosition + imgHeight + 30 > pageHeight) {
+      doc.addPage();
+      startPosition = 30;
+    } else {
+      startPosition += 20;
+    }
+
+    doc.setFontSize(14);
+    doc.text("Schema Structure", 105, startPosition - 20, { align: "center" });
+    doc.addImage(link.href, "PNG", x, startPosition + 10, imgWidth, imgHeight);
+    console.log("Added Image in Doc.");
 
     URL.revokeObjectURL(url);
-    // doc.text("Schema Structure", 105, 10, { align: "center" });
-    // doc.addImage(link.href, "PNG", 30, 70, 180, 180); // Adjust the image size and position here
-
-    // Save the PDF with the desired filename
-    // doc.save("schema-graph.pdf");
+    doc.save(`Digispot.AI SEOAudit report-${title || "Website"}.pdf`);
   };
 
   img.onerror = () => {

@@ -45,7 +45,7 @@ export const addHeaderDetails = (doc, headersData, startPosition) => {
     const fontSize = fontSizeMap[tag] || 10;
 
     doc.setFontSize(fontSize);
-    doc.text(`${tag.toUpperCase()}:  `, (28 - fontSize) * 1.5, yPosition);
+    doc.text(`${tag.toUpperCase()}:`, (28 - fontSize) * 1.5, yPosition);
 
     const wrappedText = doc.splitTextToSize(text || "No Content", 170);
     wrappedText.forEach((line) => {
@@ -53,7 +53,7 @@ export const addHeaderDetails = (doc, headersData, startPosition) => {
         doc.addPage();
         yPosition = 10;
       }
-      doc.text(line, 30, yPosition);
+      doc.text(line, (28 - fontSize) * 1.5 + 10, yPosition);
       yPosition += 7;
     });
     yPosition += 5;

@@ -765,14 +765,15 @@ div {
 #downloadbutton:hover {
   color: #f1caca;
   background-color: #1d1919;
-  transform: scale(1.1);
+  transform: scale(1.02);
 }
 
 #downloadbutton:active {
   transform: scale(0.98);
 }
 
-#noref {
+.noref {
+  width: 40px;
   opacity: 0;
 }
 

@@ -1,5 +1,11 @@
 export const addImageDetails = (doc, images, startPosition) => {
   let yPosition = startPosition;
+  const leftMargin = 10;
+  const cellPadding = 2;
+  const columnWidths = [15, 85, 60, 30]; // Column widths for Index, URL, ALT, and Description
+  const rowPadding = 2; // Padding below content
+  const pageHeight = 270; // A4 page height in mm (standard page size)
+  //const tableWidth = columnWidths.reduce((sum, width) => sum + width, 0); // Total table width
 
   doc.setFontSize(14);
   doc.text("Image Information", 10, yPosition);
@@ -13,7 +19,7 @@ export const addImageDetails = (doc, images, startPosition) => {
   ];
 
   imageCounts.forEach(({ label, value }) => {
-    if (yPosition > 270) {
+    if (yPosition > pageHeight - 20) {
       doc.addPage();
       yPosition = 10;
     }
@@ -24,20 +30,32 @@ export const addImageDetails = (doc, images, startPosition) => {
     doc.text(`${value}`, 50, yPosition);
     yPosition += 7;
   });
+
   yPosition += 10;
   doc.setFontSize(14);
   doc.text("Image Information by Category", 10, yPosition);
   yPosition += 10;
 
-  // Define categories and their corresponding image sets
   const categories = [
-    { label: "Without ALT", data: images.noAlt || [] },
-    { label: "Without SRC", data: images.noSrc || [] },
-    { label: "Without Description", data: images.noLongDesc || [] },
+    {
+      label: "Without ALT",
+      data: images.noAlt || [],
+    },
+    {
+      label: "Without SRC",
+      data: images.noSrc || [],
+    },
+    {
+      label: "Without Description",
+      data: images.noLongDesc || [],
+      specialCondition:
+        (images.noLongDesc?.length || 0) === (images.total?.length || 0),
+      specialMessage: "All links in the website have no Description.",
+    },
   ];
 
-  categories.forEach(({ label, data }) => {
-    if (yPosition > 270) {
+  categories.forEach(({ label, data, specialCondition, specialMessage }) => {
+    if (yPosition > pageHeight - 20) {
       doc.addPage();
       yPosition = 10;
     }
@@ -46,58 +64,157 @@ export const addImageDetails = (doc, images, startPosition) => {
     doc.text(label, 10, yPosition);
     yPosition += 7;
 
-    if (data.length === 0) {
-      doc.setFontSize(10);
-      doc.text("No images in this category.", 20, yPosition);
-      yPosition += 10;
+    if (specialCondition) {
+      doc.setFontSize(14);
+      doc.setFont(undefined, "bold");
+      doc.text(specialMessage, 20, yPosition);
+      doc.setFont(undefined, "normal");
+      yPosition += 15; // Add space after the message
       return;
     }
 
+    if (data.length === 0) {
+      doc.setFontSize(10);
+      doc.text("No images in this category.", 20, yPosition);
+      yPosition += 15;
+      return;
+    }
+
+    doc.setFont(undefined, "bold");
+    doc.setFontSize(10);
+    doc.text("Index", leftMargin + cellPadding, yPosition + rowPadding + 2);
+    doc.text(
+      "URL",
+      leftMargin + columnWidths[0] + cellPadding,
+      yPosition + rowPadding + 2
+    );
+    doc.text(
+      "ALT",
+      leftMargin + columnWidths[0] + columnWidths[1] + cellPadding,
+      yPosition + rowPadding + 2
+    );
+    doc.text(
+      "Description",
+      leftMargin +
+        columnWidths[0] +
+        columnWidths[1] +
+        columnWidths[2] +
+        cellPadding,
+      yPosition + rowPadding + 2
+    );
+
+    // Draw the header border around each column
+    doc.rect(leftMargin, yPosition, columnWidths[0], rowPadding + 5); // Index
+    doc.rect(
+      leftMargin + columnWidths[0],
+      yPosition,
+      columnWidths[1],
+      rowPadding + 5
+    );
+    doc.rect(
+      leftMargin + columnWidths[0] + columnWidths[1],
+      yPosition,
+      columnWidths[2],
+      rowPadding + 5
+    );
+    doc.rect(
+      leftMargin + columnWidths[0] + columnWidths[1] + columnWidths[2],
+      yPosition,
+      columnWidths[3],
+      rowPadding + 5
+    );
+    yPosition += rowPadding + 5;
+
+    doc.setFont(undefined, "normal");
     data.forEach(({ src, alt, longDesc }, index) => {
-      if (yPosition > 271) {
+      const rowStartY = yPosition;
+
+      const srcText = doc.splitTextToSize(
+        src || "No SRC",
+        columnWidths[1] - cellPadding * 2
+      );
+      const altText = doc.splitTextToSize(
+        alt || "No ALT",
+        columnWidths[2] - cellPadding * 2
+      );
+      const descText = doc.splitTextToSize(
+        longDesc || "No Desc",
+        columnWidths[3] - cellPadding * 2
+      );
+
+      const maxLines = Math.max(
+        srcText.length,
+        altText.length,
+        descText.length
+      );
+      const rowHeightAdjusted = maxLines * 5 + rowPadding; // Adjust row height dynamically
+
+      if (yPosition + rowHeightAdjusted > pageHeight - 20) {
         doc.addPage();
         yPosition = 10;
       }
 
-      yPosition += 5;
-      doc.setFontSize(10);
-      doc.text(`${index + 1}.`, 10, yPosition);
-      doc.text("SRC", 20, yPosition);
-      doc.text(":", 38, yPosition);
-      const srcText = doc.splitTextToSize(src || "No SRC", 160);
-      srcText.forEach((line) => {
-        if (yPosition > 271) {
-          doc.addPage();
-          yPosition = 10;
-        }
-        doc.text(line, 40, yPosition);
-        yPosition += 7;
+      // Draw borders for each column in the row
+      doc.rect(leftMargin, yPosition, columnWidths[0], rowHeightAdjusted); // Index
+      doc.rect(
+        leftMargin + columnWidths[0],
+        yPosition,
+        columnWidths[1],
+        rowHeightAdjusted
+      ); // URL
+      doc.rect(
+        leftMargin + columnWidths[0] + columnWidths[1],
+        yPosition,
+        columnWidths[2],
+        rowHeightAdjusted
+      ); // ALT
+      doc.rect(
+        leftMargin + columnWidths[0] + columnWidths[1] + columnWidths[2],
+        yPosition,
+        columnWidths[3],
+        rowHeightAdjusted
+      ); // Description
+
+      // Add content to the table
+      doc.text(
+        `${index + 1}`,
+        leftMargin + cellPadding,
+        yPosition + rowPadding + 2
+      );
+
+      srcText.forEach((line, lineIndex) => {
+        doc.text(
+          line,
+          leftMargin + columnWidths[0] + cellPadding,
+          yPosition + rowPadding + 2 + lineIndex * 5
+        );
       });
 
-      doc.text("ALT", 20, yPosition);
-      doc.text(":", 38, yPosition);
-      const altText = doc.splitTextToSize(alt || "No ALT", 160);
-      altText.forEach((line) => {
-        if (yPosition > 271) {
-          doc.addPage();
-          yPosition = 10;
-        }
-        doc.text(line, 40, yPosition);
-        yPosition += 7;
+      altText.forEach((line, lineIndex) => {
+        doc.text(
+          line,
+          leftMargin + columnWidths[0] + columnWidths[1] + cellPadding,
+          yPosition + rowPadding + 2 + lineIndex * 5
+        );
       });
 
-      doc.text("Description", 20, yPosition);
-      doc.text(":", 38, yPosition);
-      const descText = doc.splitTextToSize(longDesc || "No Description", 160);
-      descText.forEach((line) => {
-        if (yPosition > 271) {
-          doc.addPage();
-          yPosition = 10;
-        }
-        doc.text(line, 40, yPosition);
-        yPosition += 7;
+      descText.forEach((line, lineIndex) => {
+        doc.text(
+          line,
+          leftMargin +
+            columnWidths[0] +
+            columnWidths[1] +
+            columnWidths[2] +
+            cellPadding,
+          yPosition + rowPadding + 2 + lineIndex * 5
+        );
       });
+
+      yPosition += rowHeightAdjusted;
     });
+
+    // Add spacing after each table
+    yPosition += 15;
   });
 
   return yPosition;
