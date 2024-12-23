@@ -66,7 +66,6 @@ const DownloadPdf = () => {
         40,
         40
       );
-      console.log(graphRef.current);
     }
   }, [schemas]);
 
@@ -75,25 +74,45 @@ const DownloadPdf = () => {
     const jsPDF = (await import("jspdf")).jsPDF;
     const doc = new jsPDF();
 
-    let yPosition = 20;
+    let yPosition = 30;
+    let pageNumber = 1;
     //doc.save("Schema.pdf");
 
-    yPosition = addMetaLinksDetails(doc, info, yPosition);
+    [yPosition, pageNumber] = addMetaLinksDetails(
+      doc,
+      info,
+      yPosition,
+      pageNumber
+    );
 
     yPosition += 10;
-    yPosition = addLinksDetails(doc, links, yPosition);
+    [yPosition, pageNumber] = addLinksDetails(
+      doc,
+      links,
+      yPosition,
+      pageNumber
+    );
 
     yPosition += 10;
-    yPosition = addImageDetails(doc, images, yPosition);
+    [yPosition, pageNumber] = addImageDetails(
+      doc,
+      images,
+      yPosition,
+      pageNumber
+    );
 
     yPosition += 10;
-    yPosition = addHeaderDetails(doc, headers, yPosition);
+    [yPosition, pageNumber] = addHeaderDetails(
+      doc,
+      headers,
+      yPosition,
+      pageNumber
+    );
 
     yPosition += 10;
-    await downloadGraphAsPdf(doc, graphRef, yPosition, info.title);
-
-    setLoading(false); // Hide loader once the download is complete
-    console.log("DownloadGraphAsPdf");
+    setLoading(false);
+    downloadGraphAsPdf(doc, graphRef, yPosition, info.title, pageNumber);
+    // Hide loader once the download is complete
   };
 
   return (
@@ -103,7 +122,7 @@ const DownloadPdf = () => {
         Download as PDF
       </button>
       <div className="noref">
-        {loading && <img src="loading.gif" alt="Loader" />}
+        {loading && <img src="image/loading.gif" alt="Loader" />}
       </div>
     </div>
   );

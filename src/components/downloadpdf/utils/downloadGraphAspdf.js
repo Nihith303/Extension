@@ -1,8 +1,16 @@
-export const downloadGraphAsPdf = (doc, graphRef, startPosition, title) => {
+import { borderAndFooter } from "./borderandfooter";
+
+export const downloadGraphAsPdf = (
+  doc,
+  graphRef,
+  startPosition,
+  title,
+  pageNumber
+) => {
   // Get the SVG element and convert it to an image URL (PNG)
   const svgElement = graphRef.current.querySelector("svg");
   if (!svgElement) {
-    doc.save(`Digispot.AI SEOAudit report-${title || "Website"}.pdf`);
+    doc.save(`SEOAudit report-${title || "Website"}.pdf`);
     return;
   }
 
@@ -55,18 +63,28 @@ export const downloadGraphAsPdf = (doc, graphRef, startPosition, title) => {
 
     if (startPosition + imgHeight + 30 > pageHeight) {
       doc.addPage();
+      pageNumber = borderAndFooter(doc, pageNumber);
       startPosition = 30;
     } else {
       startPosition += 20;
     }
 
     doc.setFontSize(14);
-    doc.text("Schema Structure", 105, startPosition - 20, { align: "center" });
+    doc.setTextColor(0, 123, 255);
+    doc.text("Schema Structure", 105, startPosition - 10, { align: "center" });
     doc.addImage(link.href, "PNG", x, startPosition + 10, imgWidth, imgHeight);
-    console.log("Added Image in Doc.");
+
+    // Adding WaterMark on the image.
+    // doc.setFontSize(70);
+    // doc.setTextColor(220, 220, 220);
+
+    // doc.text("Digispot.AI", 210.0 / 2, 297.0 / 2, {
+    //   align: "center",
+    //   angle: 45,
+    // });
 
     URL.revokeObjectURL(url);
-    doc.save(`Digispot.AI SEOAudit report-${title || "Website"}.pdf`);
+    doc.save(`SEOAudit report-${title || "Website"}.pdf`);
   };
 
   img.onerror = () => {

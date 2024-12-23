@@ -774,7 +774,7 @@ div {
 
 .noref {
   width: 40px;
-  opacity: 0;
+  opacity: 1;
 }
 
 body {

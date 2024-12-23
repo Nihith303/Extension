@@ -1,20 +1,37 @@
-export const addHeaderDetails = (doc, headersData, startPosition) => {
+import { borderAndFooter } from "./borderandfooter";
+
+export const addHeaderDetails = (
+  doc,
+  headersData,
+  startPosition,
+  pageNumber
+) => {
+  const marginTop = 20; // Top margin
+  const marginBottom = 20; // Bottom margin
+  const marginleft = 10;
+  const pageHeight = doc.internal.pageSize.height; // Page height
   let yPosition = startPosition;
 
+  // Ensure startPosition is within the margin
+  yPosition = Math.max(yPosition, marginTop);
+
   doc.setFontSize(14);
-  doc.text("Headers Information", 10, yPosition);
+  doc.setTextColor(0, 123, 255);
+  doc.text("Headers Information", 15, yPosition);
   yPosition += 10;
 
   const headerCounts = headersData.counts;
 
   // Add header counts
   Object.entries(headerCounts).forEach(([header, count]) => {
-    if (yPosition > 270) {
+    if (yPosition > pageHeight - marginBottom) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber);
+      yPosition = marginTop;
     }
     doc.setFontSize(12);
-    doc.text(`${header.toUpperCase()}:`, 10, yPosition);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${header.toUpperCase()}:`, 15, yPosition);
     doc.setFontSize(10);
     doc.text(`${count}`, 40, yPosition);
     yPosition += 7;
@@ -24,13 +41,15 @@ export const addHeaderDetails = (doc, headersData, startPosition) => {
 
   // Add detailed header content with hierarchy
   doc.setFontSize(14);
-  doc.text("Header Details", 10, yPosition);
+  doc.setTextColor(0, 123, 255);
+  doc.text("Header Details", 15, yPosition);
   yPosition += 10;
 
   headersData.headers.forEach(({ tag, text }, index) => {
-    if (yPosition > 270) {
+    if (yPosition > pageHeight - marginBottom) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber);
+      yPosition = marginTop;
     }
 
     // Define font size based on header level
@@ -45,19 +64,25 @@ export const addHeaderDetails = (doc, headersData, startPosition) => {
     const fontSize = fontSizeMap[tag] || 10;
 
     doc.setFontSize(fontSize);
-    doc.text(`${tag.toUpperCase()}:`, (28 - fontSize) * 1.5, yPosition);
+    doc.setTextColor(0, 0, 0);
+    doc.text(
+      `${tag.toUpperCase()}:`,
+      (28 - fontSize) * 1.5 + marginleft,
+      yPosition
+    );
 
-    const wrappedText = doc.splitTextToSize(text || "No Content", 170);
+    const wrappedText = doc.splitTextToSize(text || "No Content", 160);
     wrappedText.forEach((line) => {
-      if (yPosition > 270) {
+      if (yPosition > pageHeight - marginBottom) {
         doc.addPage();
-        yPosition = 10;
+        pageNumber = borderAndFooter(doc, pageNumber);
+        yPosition = marginTop;
       }
-      doc.text(line, (28 - fontSize) * 1.5 + 10, yPosition);
+      doc.text(line, (28 - fontSize) * 1.5 + marginleft + 10, yPosition);
       yPosition += 7;
     });
     yPosition += 5;
   });
 
-  return yPosition;
+  return [yPosition, pageNumber];
 };

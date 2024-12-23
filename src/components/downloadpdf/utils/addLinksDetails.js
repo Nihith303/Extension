@@ -1,8 +1,16 @@
-export const addLinksDetails = (doc, links, startPosition) => {
+import { borderAndFooter } from "./borderandfooter";
+
+export const addLinksDetails = (doc, links, startPosition, pageNumber) => {
   const categories = ["internal", "external"];
+
   let yPosition = startPosition;
+
+  // Draw border and footer for the first page
+  //pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
+
   doc.setFontSize(14);
-  doc.text("Links Summary", 10, yPosition);
+  doc.setTextColor(0, 123, 255);
+  doc.text("Links Summary", 20, yPosition);
   yPosition += 10;
 
   // Summary Section
@@ -14,33 +22,38 @@ export const addLinksDetails = (doc, links, startPosition) => {
   ];
 
   linkCounts.forEach(({ label, value }) => {
-    if (yPosition > 270) {
+    if (yPosition + 7 > 270) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
+      yPosition = 20;
     }
     doc.setFontSize(12);
-    doc.text(`${label}`, 10, yPosition);
-    doc.text(":", 40, yPosition);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${label}`, 20, yPosition);
+    doc.text(":", 50, yPosition);
     doc.setFontSize(10);
-    doc.text(`${value}`, 50, yPosition);
+    doc.text(`${value}`, 60, yPosition);
     yPosition += 7;
   });
 
   yPosition += 10;
   doc.setFontSize(14);
-  doc.text("Links Information by Category", 10, yPosition);
+  doc.setTextColor(0, 123, 255);
+  doc.text("Links Information by Category", 20, yPosition);
 
   categories.forEach((category) => {
-    if (yPosition > 270) {
+    if (yPosition + 17 > 270) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
+      yPosition = 20;
     }
 
     yPosition += 10;
     doc.setFontSize(14);
+    doc.setTextColor(0, 123, 255);
     doc.text(
       `${category.charAt(0).toUpperCase() + category.slice(1)} Links`,
-      10,
+      20,
       yPosition
     );
 
@@ -48,49 +61,51 @@ export const addLinksDetails = (doc, links, startPosition) => {
 
     // Table Headers
     doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
     doc.setFont(undefined, "bold");
-    doc.rect(10, yPosition - 5, 12, 7); // Index header border with padding
-    doc.rect(22, yPosition - 5, 108, 7); // URL header border
-    doc.rect(130, yPosition - 5, 70, 7); // Title header border
-    doc.text("Index", 12, yPosition);
-    doc.text("URL", 24, yPosition);
-    doc.text("Title", 132, yPosition);
+    doc.rect(20, yPosition - 5, 12, 7); // Index header border with padding
+    doc.rect(32, yPosition - 5, 88, 7); // URL header border
+    doc.rect(120, yPosition - 5, 70, 7); // Title header border
+    doc.text("Index", 22, yPosition);
+    doc.text("URL", 34, yPosition);
+    doc.text("Title", 122, yPosition);
     yPosition += 7;
     doc.setFont(undefined, "normal");
 
     links[category]?.forEach(({ href, title }, index) => {
-      if (yPosition > 270) {
+      const urlText = doc.splitTextToSize(href.trim(), 85);
+      const titleText = doc.splitTextToSize(title?.trim() || "No title", 68);
+
+      const rowHeight = Math.max(urlText.length, titleText.length) * 7;
+
+      if (yPosition + rowHeight > 285) {
         doc.addPage();
-        yPosition = 10;
+        pageNumber = borderAndFooter(doc, pageNumber);
+        yPosition = 20;
         doc.setFontSize(10);
         doc.setFont(undefined, "bold");
-        doc.rect(10, yPosition - 5, 12, 7); // Index header border with padding
-        doc.rect(22, yPosition - 5, 108, 7); // URL header border
-        doc.rect(130, yPosition - 5, 70, 7); // Title header border
-        doc.text("Index", 12, yPosition);
-        doc.text("URL", 24, yPosition);
-        doc.text("Title", 132, yPosition);
+        doc.rect(20, yPosition - 5, 12, 7); // Index header border with padding
+        doc.rect(32, yPosition - 5, 88, 7); // URL header border
+        doc.rect(120, yPosition - 5, 70, 7); // Title header border
+        doc.text("Index", 22, yPosition);
+        doc.text("URL", 34, yPosition);
+        doc.text("Title", 122, yPosition);
         yPosition += 7;
         doc.setFont(undefined, "normal");
       }
 
-      const urlText = doc.splitTextToSize(href.trim(), 100);
-      const titleText = doc.splitTextToSize(title?.trim() || "No title", 60);
+      doc.rect(20, yPosition - 5, 12, rowHeight); // Index border with padding
+      doc.rect(32, yPosition - 5, 88, rowHeight); // URL border
+      doc.rect(120, yPosition - 5, 70, rowHeight); // Title border
 
-      const rowHeight = Math.max(urlText.length, titleText.length) * 7;
-
-      doc.rect(10, yPosition - 5, 12, rowHeight); // Index border with padding
-      doc.rect(22, yPosition - 5, 108, rowHeight); // URL border
-      doc.rect(130, yPosition - 5, 70, rowHeight); // Title border
-
-      doc.text(`${index + 1}`, 12, yPosition);
+      doc.text(`${index + 1}`, 22, yPosition);
 
       urlText.forEach((line, lineIndex) => {
-        doc.text(line, 24, yPosition + lineIndex * 7);
+        doc.text(line, 34, yPosition + lineIndex * 7);
       });
 
       titleText.forEach((line, lineIndex) => {
-        doc.text(line, 132, yPosition + lineIndex * 7);
+        doc.text(line, 122, yPosition + lineIndex * 7);
       });
 
       yPosition += rowHeight;
@@ -99,12 +114,14 @@ export const addLinksDetails = (doc, links, startPosition) => {
     if (!links[category]?.length) {
       if (yPosition > 270) {
         doc.addPage();
-        yPosition = 10;
+        pageNumber = borderAndFooter(doc, pageNumber);
+        yPosition = 20;
       }
       doc.setFontSize(10);
-      doc.text("No links available.", 10, yPosition);
+      doc.text("No links available.", 20, yPosition);
       yPosition += 10;
     }
   });
-  return yPosition;
+
+  return [yPosition, pageNumber];
 };

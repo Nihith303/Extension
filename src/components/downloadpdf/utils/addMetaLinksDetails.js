@@ -1,4 +1,5 @@
-export const addMetaLinksDetails = (doc, info, startPosition) => {
+import { borderAndFooter } from "./borderandfooter";
+export const addMetaLinksDetails = (doc, info, startPosition, pageNumber) => {
   const metaLinks = [
     { label: "Title", value: info.title },
     { label: "Description", value: info.description },
@@ -8,20 +9,29 @@ export const addMetaLinksDetails = (doc, info, startPosition) => {
     { label: "Robots Meta", value: info.robots },
     { label: "X-Robots Meta", value: info.xRobots },
   ];
-  // Title of the Report.
+
+  // Title of the Report
+  pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
   doc.setFontSize(16);
-  doc.text("Website SEO Report", 105, 10, { align: "center" });
+  doc.setTextColor(0, 123, 255);
+  doc.setFont(undefined, "bold");
+  doc.text("Website SEO Report", 105, 20, { align: "center" });
+
   doc.setFontSize(14);
-  doc.text("Meta Links Data", 10, startPosition);
+  doc.setFont(undefined, "normal");
+  doc.text("Meta Links Data", 20, startPosition);
   let yPosition = startPosition + 10;
+
   metaLinks.forEach((item) => {
     if (yPosition > 280) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
+      yPosition = 20;
     }
     doc.setFontSize(12);
-    doc.text(`${item.label}`, 10, yPosition);
-    doc.text(":", 40, yPosition);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${item.label}`, 20, yPosition);
+    doc.text(":", 50, yPosition);
     doc.setFontSize(10);
     const pageWidth = 140;
     const wrappedText = doc.splitTextToSize(
@@ -31,12 +41,15 @@ export const addMetaLinksDetails = (doc, info, startPosition) => {
 
     wrappedText.forEach((line) => {
       if (yPosition > 280) {
+        pageNumber++;
         doc.addPage();
-        yPosition = 10;
+        pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
+        yPosition = 20;
       }
-      doc.text(line, 45, yPosition);
+      doc.text(line, 55, yPosition);
       yPosition += 7;
     });
   });
-  return yPosition;
+
+  return [yPosition, pageNumber];
 };

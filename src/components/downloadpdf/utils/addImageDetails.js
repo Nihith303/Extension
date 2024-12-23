@@ -1,14 +1,19 @@
-export const addImageDetails = (doc, images, startPosition) => {
-  let yPosition = startPosition;
-  const leftMargin = 10;
+import { borderAndFooter } from "./borderandfooter";
+
+export const addImageDetails = (doc, images, startPosition, pageNumber) => {
+  let yPosition = startPosition + 10;
+  const leftMargin = 15;
   const cellPadding = 2;
-  const columnWidths = [15, 85, 60, 30]; // Column widths for Index, URL, ALT, and Description
-  const rowPadding = 2; // Padding below content
-  const pageHeight = 270; // A4 page height in mm (standard page size)
-  //const tableWidth = columnWidths.reduce((sum, width) => sum + width, 0); // Total table width
+  const columnWidths = [15, 85, 50, 30]; // Column widths for Index, URL, ALT, and Description
+  const rowPadding = 2;
+  const pageHeight = 290;
+
+  // Initial border and footer for the first page
+  // pageNumber = borderAndFooter(doc, pageNumber);
 
   doc.setFontSize(14);
-  doc.text("Image Information", 10, yPosition);
+  doc.setTextColor(0, 123, 255);
+  doc.text("Image Information", leftMargin, yPosition);
   yPosition += 10;
 
   const imageCounts = [
@@ -21,19 +26,22 @@ export const addImageDetails = (doc, images, startPosition) => {
   imageCounts.forEach(({ label, value }) => {
     if (yPosition > pageHeight - 20) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber); // Add border and footer
+      yPosition = 20; // Reset yPosition with top padding
     }
     doc.setFontSize(12);
-    doc.text(`${label}`, 10, yPosition);
-    doc.text(":", 40, yPosition);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`${label}`, leftMargin, yPosition);
+    doc.text(":", leftMargin + 30, yPosition);
     doc.setFontSize(10);
-    doc.text(`${value}`, 50, yPosition);
+    doc.text(`${value}`, leftMargin + 40, yPosition);
     yPosition += 7;
   });
 
   yPosition += 10;
   doc.setFontSize(14);
-  doc.text("Image Information by Category", 10, yPosition);
+  doc.setTextColor(0, 123, 255);
+  doc.text("Image Information by Category", leftMargin, yPosition);
   yPosition += 10;
 
   const categories = [
@@ -57,17 +65,20 @@ export const addImageDetails = (doc, images, startPosition) => {
   categories.forEach(({ label, data, specialCondition, specialMessage }) => {
     if (yPosition > pageHeight - 20) {
       doc.addPage();
-      yPosition = 10;
+      pageNumber = borderAndFooter(doc, pageNumber); // Add border and footer
+      yPosition = 20; // Reset yPosition with top padding
     }
 
     doc.setFontSize(12);
-    doc.text(label, 10, yPosition);
+    doc.setTextColor(0, 123, 255);
+    doc.text(label, leftMargin, yPosition);
     yPosition += 7;
 
     if (specialCondition) {
       doc.setFontSize(14);
       doc.setFont(undefined, "bold");
-      doc.text(specialMessage, 20, yPosition);
+      doc.setTextColor(0, 0, 0);
+      doc.text(specialMessage, leftMargin + 10, yPosition);
       doc.setFont(undefined, "normal");
       yPosition += 15; // Add space after the message
       return;
@@ -75,13 +86,14 @@ export const addImageDetails = (doc, images, startPosition) => {
 
     if (data.length === 0) {
       doc.setFontSize(10);
-      doc.text("No images in this category.", 20, yPosition);
+      doc.text("No images in this category.", leftMargin + 10, yPosition);
       yPosition += 15;
       return;
     }
 
     doc.setFont(undefined, "bold");
     doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
     doc.text("Index", leftMargin + cellPadding, yPosition + rowPadding + 2);
     doc.text(
       "URL",
@@ -151,7 +163,8 @@ export const addImageDetails = (doc, images, startPosition) => {
 
       if (yPosition + rowHeightAdjusted > pageHeight - 20) {
         doc.addPage();
-        yPosition = 10;
+        pageNumber = borderAndFooter(doc, pageNumber); // Add border and footer
+        yPosition = 20; // Reset yPosition with top padding
       }
 
       // Draw borders for each column in the row
@@ -217,5 +230,5 @@ export const addImageDetails = (doc, images, startPosition) => {
     yPosition += 15;
   });
 
-  return yPosition;
+  return [yPosition, pageNumber];
 };
