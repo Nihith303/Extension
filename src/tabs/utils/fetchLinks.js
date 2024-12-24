@@ -10,17 +10,18 @@ export const fetchLinks = async () => {
       {
         target: { tabId },
         func: () => {
-          const links = Array.from(document.querySelectorAll("a"))
-            .map((a) => ({
-              href: a.href,
-              title: a.textContent.trim() || "No title",
-            }))
-            .filter((link) => link.href);
+          const links = Array.from(document.querySelectorAll("a")).map((a) => ({
+            href: a.href || null,
+            title: a.textContent.trim() || "No title",
+          }));
 
           const url = window.location.origin;
 
-          const internal = links.filter((link) => link.href.startsWith(url));
-          const external = links.filter((link) => !link.href.startsWith(url));
+          const internal = links.filter((link) => link.href?.startsWith(url));
+          const external = links.filter(
+            (link) => link.href && !link.href.startsWith(url)
+          );
+          const withoutHref = links.filter((link) => !link.href);
           const unique = [...new Set(links.map((link) => link.href))].map(
             (href) => ({
               href,
@@ -33,6 +34,7 @@ export const fetchLinks = async () => {
             total: links,
             internal,
             external,
+            withoutHref,
             unique,
           };
         },
@@ -41,7 +43,11 @@ export const fetchLinks = async () => {
         if (result && result.result) {
           resolve(result.result);
         } else {
-          reject(new Error("Failed to fetch links"));
+          reject(
+            new Error(
+              "Error Fetching the Links Details, Please try again later."
+            )
+          );
         }
       }
     );

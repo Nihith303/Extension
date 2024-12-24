@@ -14,18 +14,6 @@ h2 {
   color: #007bff;
 }
 
-.app-container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0px 0px;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.app-content {
-  flex: 1;
-  padding: 10px 10px;
-  height: 80%;
-  overflow-y: auto;
-  border-radius: 10px;
+div {
+  box-sizing: border-box;
 }

@@ -17,7 +17,7 @@ export const addHeaderDetails = (
 
   doc.setFontSize(14);
   doc.setTextColor(0, 123, 255);
-  doc.text("Headers Information", 15, yPosition);
+  doc.text("Headers Information", 20, yPosition);
   yPosition += 10;
 
   const headerCounts = headersData.counts;
@@ -31,21 +31,25 @@ export const addHeaderDetails = (
     }
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
-    doc.text(`${header.toUpperCase()}:`, 15, yPosition);
+    doc.text(`${header.toUpperCase()}`, 20, yPosition);
     doc.setFontSize(10);
-    doc.text(`${count}`, 40, yPosition);
+    doc.text(`:          ${count}`, 50, yPosition);
     yPosition += 7;
   });
 
+  if (yPosition > 297.0 * (3 / 4)) {
+    doc.addPage();
+    pageNumber = borderAndFooter(doc, pageNumber);
+    yPosition = 10;
+  }
   yPosition += 10;
-
   // Add detailed header content with hierarchy
   doc.setFontSize(14);
   doc.setTextColor(0, 123, 255);
-  doc.text("Header Details", 15, yPosition);
+  doc.text("Header Details", 20, yPosition);
   yPosition += 10;
 
-  headersData.headers.forEach(({ tag, text }, index) => {
+  headersData.headers.forEach(({ tag, text }) => {
     if (yPosition > pageHeight - marginBottom) {
       doc.addPage();
       pageNumber = borderAndFooter(doc, pageNumber);
@@ -84,5 +88,5 @@ export const addHeaderDetails = (
     yPosition += 5;
   });
 
-  return [yPosition, pageNumber];
+  return [yPosition + 10, pageNumber];
 };

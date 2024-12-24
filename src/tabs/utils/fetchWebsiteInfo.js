@@ -37,7 +37,11 @@ export const fetchWebsiteInfo = async () => {
         if (result && result.result) {
           resolve(result.result);
         } else {
-          reject(new Error("Failed to fetch website info"));
+          reject(
+            new Error(
+              "Error fetching the Metalinks Summary, Please try again later."
+            )
+          );
         }
       }
     );

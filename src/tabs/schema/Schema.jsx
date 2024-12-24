@@ -12,30 +12,46 @@ const Schema = () => {
   const [fontSize, setFontSize] = useState(12);
   const [nodeSize, setNodeSize] = useState(8);
   const [isDragEnabled, setIsDragEnabled] = useState(true);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const graphRef = useRef(null);
   const simulationRef = useRef(null);
 
   // Fetch schema data
   useEffect(() => {
-    fetchSchemas(setSchemas);
+    const fetchData = async () => {
+      setIsLoading(true); // Start loading
+      try {
+        const data = await fetchSchemas();
+        setSchemas(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false); // End loading
+      }
+    };
+    fetchData();
   }, []);
 
   // Render graph when schemas change
   useEffect(() => {
     if (schemas.length > 0) {
-      const graphData = buildGraphData(schemas);
-      renderGraph(
-        graphRef,
-        graphData,
-        linkDistance,
-        fontSize,
-        nodeSize,
-        isDragEnabled,
-        simulationRef,
-        1000,
-        1000
-      );
-      console.log(graphRef.current);
+      try {
+        const graphData = buildGraphData(schemas);
+        renderGraph(
+          graphRef,
+          graphData,
+          linkDistance,
+          fontSize,
+          nodeSize,
+          isDragEnabled,
+          simulationRef,
+          1000,
+          1000
+        );
+      } catch (err) {
+        setError(`Failed to render graph: ${err.message}`);
+      }
     }
   }, [schemas]);
 
@@ -101,7 +117,15 @@ const Schema = () => {
 
   return (
     <>
-      {schemas.length > 0 && (
+      {error && (
+        <div className="error-message">
+          <p>{error}</p>
+        </div>
+      )}
+      {isLoading && (
+        <img src="image/loading.gif" alt="Loading" className="loading" />
+      )}
+      {!isLoading && !error && schemas.length > 0 && (
         <div>
           <div className="container">
             <h2>Schema Visualizer</h2>
@@ -161,7 +185,7 @@ const Schema = () => {
           <div ref={graphRef} className="graph-container"></div>
         </div>
       )}
-      {schemas.length === 0 && (
+      {!isLoading && !error && schemas.length === 0 && (
         <div className="no-items">
           <p>No Schema Found on this Website.</p>
         </div>

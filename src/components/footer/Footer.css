@@ -1,37 +1,50 @@
 .footer {
-    background-color: #1d1919;
-    padding: 15px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #ddd;
-    font-family: Arial, sans-serif;
-  }
-  
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .footer-text {
-    font-weight: bolder;
-    font-size: 14px;
-    color: #f1caca;
-  }
-  
-  .footer-button {
-    padding: 0px 20px;
-    background-color: #0A97B0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .footer-button:hover {
-    background-color: rgb(122, 206, 215);
-  }
-  
-  
+  background-color: #1d1919;
+  padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  font-family: Arial, sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.footer-text {
+  font-weight: bolder;
+  font-size: 14px;
+  color: #f1caca;
+}
+
+.footer-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: auto;
+  background-color: #0a97b0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  gap: 10px;
+}
+
+.footer-button:hover {
+  background-color: rgb(122, 206, 215);
+}
+
+#logo {
+  margin-left: 10px;
+  width: 25px;
+  height: 25px;
+}
+
+#mainlink {
+  text-decoration: none;
+}

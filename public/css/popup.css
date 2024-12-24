@@ -35,6 +35,21 @@
   color: #0056b3;
 }
 
+.app-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px 0px;
+  height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  padding: 10px 10px;
+  height: 80%;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
 .info {
   display: flex;
   flex-direction: column;
@@ -94,13 +109,12 @@
   transform: scale(0.98);
 }
 
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-div {
-  box-sizing: border-box;
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2em;
 }
 
 .link-counts {
@@ -720,42 +734,56 @@ div {
 
 
 .footer {
-    background-color: #1d1919;
-    padding: 15px 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #ddd;
-    font-family: Arial, sans-serif;
-  }
-  
-  .footer-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .footer-text {
-    font-weight: bolder;
-    font-size: 14px;
-    color: #f1caca;
-  }
-  
-  .footer-button {
-    padding: 0px 20px;
-    background-color: #0A97B0;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 20px;
-  }
-  
-  .footer-button:hover {
-    background-color: rgb(122, 206, 215);
-  }
-  
-  
+  background-color: #1d1919;
+  padding: 15px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  font-family: Arial, sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.footer-text {
+  font-weight: bolder;
+  font-size: 14px;
+  color: #f1caca;
+}
+
+.footer-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: auto;
+  background-color: #0a97b0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  gap: 10px;
+}
+
+.footer-button:hover {
+  background-color: rgb(122, 206, 215);
+}
+
+#logo {
+  margin-left: 10px;
+  width: 25px;
+  height: 25px;
+}
+
+#mainlink {
+  text-decoration: none;
+}
+
 #downloadbutton {
   background-color: #f1caca;
   color: #1d1919;
@@ -774,7 +802,7 @@ div {
 
 .noref {
   width: 40px;
-  opacity: 1;
+  opacity: 0;
 }
 
 body {
@@ -793,20 +821,8 @@ h2 {
   color: #007bff;
 }
 
-.app-container {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0px 0px;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.app-content {
-  flex: 1;
-  padding: 10px 10px;
-  height: 80%;
-  overflow-y: auto;
-  border-radius: 10px;
+div {
+  box-sizing: border-box;
 }
 
 

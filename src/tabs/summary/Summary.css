@@ -1,3 +1,18 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px 0px;
+  height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  padding: 10px 10px;
+  height: 80%;
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
 .info {
   display: flex;
   flex-direction: column;
@@ -55,4 +70,12 @@
 
 .buttons button:active {
   transform: scale(0.98);
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.2em;
 }

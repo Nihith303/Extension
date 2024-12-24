@@ -1,12 +1,3 @@
-h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-div {
-  box-sizing: border-box;
-}
-
 .link-counts {
   display: flex;
   justify-content: space-around;

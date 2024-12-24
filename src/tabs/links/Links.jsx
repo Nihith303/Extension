@@ -6,14 +6,15 @@ const Links = () => {
   const [links, setLinks] = useState([]);
   const [view, setView] = useState("total");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const getLinks = async () => {
       try {
         const data = await fetchLinks();
         setLinks(data);
-      } catch (error) {
-        console.error("Error fetching links:", error);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -25,11 +26,13 @@ const Links = () => {
   const exportToCSV = () => {
     const csvRows = [];
     csvRows.push("URL,Title,Category,Count");
-    ["internal", "external"].forEach((category) => {
+    ["internal", "external", "withoutHref"].forEach((category) => {
       links[category]?.forEach(({ href, title }) => {
         const count =
           links.total?.filter((link) => link.href === href).length || 0;
-        csvRows.push(`"${href}","${title}","${category}","${count}"`);
+        csvRows.push(
+          `"${href || "No href"}","${title}","${category}","${count}"`
+        );
       });
     });
     const csvContent = csvRows.join("\n");
@@ -41,60 +44,48 @@ const Links = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
+  const renderLinkCount = (label, category) => (
+    <div className="link-item">
+      <span>{label}</span>
+      <span>{links[category]?.length || 0}</span>
+    </div>
+  );
+  const renderFilterButton = (label, category) => (
+    <button
+      className={view === category ? "active" : ""}
+      onClick={() => setView(category)}
+    >
+      {label}
+    </button>
+  );
 
   return (
     <div className="active-tab-container">
       <h2>Links</h2>
       {loading ? (
         <img className="loading" src="image/loading.gif" alt="Loading"></img>
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+        </div>
       ) : (
         <>
           <div className="link-counts">
-            <div className="link-item">
-              <span>Total Links</span>
-              <span>{links.total?.length || 0}</span>
-            </div>
-            <div className="link-item">
-              <span>Internal Links</span>
-              <span>{links.internal?.length || 0}</span>
-            </div>
-            <div className="link-item">
-              <span>External Links</span>
-              <span>{links.external?.length || 0}</span>
-            </div>
-            <div className="link-item">
-              <span>Unique Links</span>
-              <span>{links.unique?.length || 0}</span>
-            </div>
+            {renderLinkCount("Total", "total")}
+            {renderLinkCount("Internal", "internal")}
+            {renderLinkCount("External", "external")}
+            {renderLinkCount("Without href", "withoutHref")}
+            {renderLinkCount("Unique", "unique")}
           </div>
 
           <div className="filter-buttons">
-            <button
-              className={view === "total" ? "active" : ""}
-              onClick={() => setView("total")}
-            >
-              Total
-            </button>
-            <button
-              className={view === "internal" ? "active" : ""}
-              onClick={() => setView("internal")}
-            >
-              Internal
-            </button>
-            <button
-              className={view === "external" ? "active" : ""}
-              onClick={() => setView("external")}
-            >
-              External
-            </button>
-            <button
-              className={view === "unique" ? "active" : ""}
-              onClick={() => setView("unique")}
-            >
-              Unique
-            </button>
+            {renderFilterButton("Total", "total")}
+            {renderFilterButton("Internal", "internal")}
+            {renderFilterButton("External", "external")}
+            {renderFilterButton("No href", "withoutHref")}
+            {renderFilterButton("Unique", "unique")}
             <button className="link-export-button" onClick={exportToCSV}>
-              Export Links
+              Export
             </button>
           </div>
 
@@ -105,14 +96,18 @@ const Links = () => {
                   <div className="link-details">
                     <p>
                       <strong>URL:</strong>
-                      <a
-                        href={link.href}
-                        className="link-url"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {link.href}
-                      </a>
+                      {link.href ? (
+                        <a
+                          href={link.href}
+                          className="link-url"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {link.href}
+                        </a>
+                      ) : (
+                        "No href"
+                      )}
                     </p>
                     <p>
                       <strong>Title:</strong> {link.title}

@@ -110,11 +110,16 @@ const PageSpeedTest = () => {
       </button>
       {isLoading && (
         <div className="active-tab-container">
-          <p>It Might Take a While to Process</p>
+          <p>It Might Take a While to Process, Please Wait!</p>
+          <br />
           <img src="image/loading.gif" alt="Loading" className="loading" />
         </div>
       )}
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <div className="error-message">
+          <p>{error}</p>
+        </div>
+      )}
 
       <div className="score-container">
         {mobileResult && renderScoreCard(mobileResult, "Mobile")}

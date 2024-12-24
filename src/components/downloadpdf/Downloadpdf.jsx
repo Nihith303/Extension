@@ -8,8 +8,10 @@ import { renderGraph } from "../../tabs/utils/renderGraph";
 import { buildGraphData } from "../../tabs/utils/buildGraph";
 import { downloadGraphAsPdf } from "./utils/downloadGraphAspdf";
 import { addMetaLinksDetails } from "./utils/addMetaLinksDetails";
-import { addLinksDetails } from "./utils/addLinksDetails";
-import { addImageDetails } from "./utils/addImageDetails";
+import { addLinksSummary } from "./utils/addLinksDetails";
+import { addLinksTable } from "./utils/addLinksTable";
+import { addImageSummary } from "./utils/addImageDetails";
+import { addImageTable } from "./utils/addImageTable";
 import { addHeaderDetails } from "./utils/addHeaderDetails";
 import "./Download.css";
 
@@ -74,7 +76,7 @@ const DownloadPdf = () => {
     const jsPDF = (await import("jspdf")).jsPDF;
     const doc = new jsPDF();
 
-    let yPosition = 30;
+    let yPosition = 35;
     let pageNumber = 1;
     //doc.save("Schema.pdf");
 
@@ -84,32 +86,26 @@ const DownloadPdf = () => {
       yPosition,
       pageNumber
     );
-
-    yPosition += 10;
-    [yPosition, pageNumber] = addLinksDetails(
+    [yPosition, pageNumber] = addLinksSummary(
       doc,
       links,
       yPosition,
       pageNumber
     );
-
-    yPosition += 10;
-    [yPosition, pageNumber] = addImageDetails(
+    [yPosition, pageNumber] = addImageSummary(
       doc,
       images,
       yPosition,
       pageNumber
     );
-
-    yPosition += 10;
     [yPosition, pageNumber] = addHeaderDetails(
       doc,
       headers,
       yPosition,
       pageNumber
     );
-
-    yPosition += 10;
+    [yPosition, pageNumber] = addImageTable(doc, images, yPosition, pageNumber);
+    [yPosition, pageNumber] = addLinksTable(doc, links, yPosition, pageNumber);
     setLoading(false);
     downloadGraphAsPdf(doc, graphRef, yPosition, info.title, pageNumber);
     // Hide loader once the download is complete

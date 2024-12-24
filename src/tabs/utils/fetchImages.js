@@ -32,7 +32,11 @@ export const fetchImages = async (tabId) => {
         if (result?.result) {
           resolve(result.result);
         } else {
-          reject("Error fetching images");
+          reject(
+            new Error(
+              "Error Fetching the images details, Please try again later."
+            )
+          );
         }
       }
     );

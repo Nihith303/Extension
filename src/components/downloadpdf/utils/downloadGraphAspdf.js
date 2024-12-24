@@ -10,6 +10,17 @@ export const downloadGraphAsPdf = (
   // Get the SVG element and convert it to an image URL (PNG)
   const svgElement = graphRef.current.querySelector("svg");
   if (!svgElement) {
+    if (startPosition > 277) {
+      doc.addPage();
+      pageNumber = borderAndFooter(doc, pageNumber);
+      startPosition = 20;
+    }
+    doc.setFontSize(14);
+    doc.setTextColor(0, 123, 255);
+    doc.text("Schema Structure", 105, startPosition - 10, { align: "center" });
+    doc.setFontSize(12);
+    doc.setTextColor(255, 0, 0);
+    doc.text("No Schema in the Website to show.", 20, startPosition);
     doc.save(`SEOAudit report-${title || "Website"}.pdf`);
     return;
   }
@@ -61,7 +72,7 @@ export const downloadGraphAsPdf = (
     const x = (pageWidth - imgWidth) / 2;
     const pageHeight = doc.internal.pageSize.height;
 
-    if (startPosition + imgHeight + 30 > pageHeight) {
+    if (startPosition + imgHeight + 40 > pageHeight) {
       doc.addPage();
       pageNumber = borderAndFooter(doc, pageNumber);
       startPosition = 30;

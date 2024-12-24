@@ -1,4 +1,5 @@
 import { borderAndFooter } from "./borderandfooter";
+
 export const addMetaLinksDetails = (doc, info, startPosition, pageNumber) => {
   const metaLinks = [
     { label: "Title", value: info.title },
@@ -25,19 +26,26 @@ export const addMetaLinksDetails = (doc, info, startPosition, pageNumber) => {
   metaLinks.forEach((item) => {
     if (yPosition > 280) {
       doc.addPage();
-      pageNumber = borderAndFooter(doc, pageNumber); // Use the imported function
+      pageNumber = borderAndFooter(doc, pageNumber);
       yPosition = 20;
     }
+
+    // Set label text
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
     doc.text(`${item.label}`, 20, yPosition);
     doc.text(":", 50, yPosition);
+
     doc.setFontSize(10);
+    if (item.value === "Not Available") {
+      doc.setTextColor(255, 0, 0); // Red color for "Not Available"
+    } else {
+      doc.setTextColor(0, 0, 0); // Default black color
+    }
+
+    // Wrap and display text
     const pageWidth = 140;
-    const wrappedText = doc.splitTextToSize(
-      item.value || "Not Available",
-      pageWidth
-    );
+    const wrappedText = doc.splitTextToSize(item.value, pageWidth);
 
     wrappedText.forEach((line) => {
       if (yPosition > 280) {
@@ -51,5 +59,5 @@ export const addMetaLinksDetails = (doc, info, startPosition, pageNumber) => {
     });
   });
 
-  return [yPosition, pageNumber];
+  return [yPosition + 15, pageNumber];
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./Images.css";
 import { fetchImages } from "../utils/fetchImages";
+import "./Images.css";
 
 const Image = () => {
   const [images, setImages] = useState({
@@ -11,6 +11,7 @@ const Image = () => {
   });
   const [view, setView] = useState("total");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchImageData = async () => {
@@ -22,8 +23,8 @@ const Image = () => {
         const tabId = tab.id;
         const imagesData = await fetchImages(tabId);
         setImages(imagesData);
-      } catch (error) {
-        console.error("Error fetching images:", error);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
@@ -65,30 +66,29 @@ const Image = () => {
     }
   };
 
+  const renderImageItem = (label, count) => (
+    <div className="image-item">
+      <span>{label}</span>
+      <span>{count || 0}</span>
+    </div>
+  );
+
   return (
     <div className="active-tab-container">
       <h2>Images</h2>
       {loading ? (
         <img src="image/loading.gif" alt="Loading" className="loading"></img>
+      ) : error ? (
+        <div className="error-message">
+          <p>{error}</p>
+        </div>
       ) : (
         <>
           <div className="image-counts">
-            <div className="image-item">
-              <span>Total Images</span>
-              <span>{images.total?.length || 0}</span>
-            </div>
-            <div className="image-item">
-              <span>Without ALT</span>
-              <span>{images.noAlt?.length || 0}</span>
-            </div>
-            <div className="image-item">
-              <span>Without Description</span>
-              <span>{images.noLongDesc?.length || 0}</span>
-            </div>
-            <div className="image-item">
-              <span>Without SRC</span>
-              <span>{images.noSrc?.length || 0}</span>
-            </div>
+            {renderImageItem("Total Images", images.total?.length)}
+            {renderImageItem("Without ALT", images.noAlt?.length)}
+            {renderImageItem("Without Description", images.noLongDesc?.length)}
+            {renderImageItem("Without SRC", images.noSrc?.length)}
           </div>
           <div className="image-nav">
             <button onClick={() => setView("total")}>Total</button>
