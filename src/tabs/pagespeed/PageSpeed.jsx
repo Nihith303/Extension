@@ -112,7 +112,7 @@ const PageSpeedTest = () => {
         <div className="active-tab-container">
           <p>It Might Take a While to Process, Please Wait!</p>
           <br />
-          <img src="image/loading.gif" alt="Loading" className="loading" />
+          <i class="loader --1"></i>
         </div>
       )}
       {error && (

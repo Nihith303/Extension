@@ -36,7 +36,7 @@ const Summary = () => {
     <div className="active-tab-container">
       <h2>Summary</h2>
       {loading ? (
-        <img src="image/loading.gif" alt="Loading" className="loading" />
+        <i class="loader --1"></i>
       ) : error ? (
         <div className="error-message">
           <p>{error}</p>

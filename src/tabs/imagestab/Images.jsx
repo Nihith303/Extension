@@ -77,7 +77,7 @@ const Image = () => {
     <div className="active-tab-container">
       <h2>Images</h2>
       {loading ? (
-        <img src="image/loading.gif" alt="Loading" className="loading"></img>
+        <i class="loader --1"></i>
       ) : error ? (
         <div className="error-message">
           <p>{error}</p>

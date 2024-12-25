@@ -122,9 +122,7 @@ const Schema = () => {
           <p>{error}</p>
         </div>
       )}
-      {isLoading && (
-        <img src="image/loading.gif" alt="Loading" className="loading" />
-      )}
+      {isLoading && <i class="loader --1"></i>}
       {!isLoading && !error && schemas.length > 0 && (
         <div>
           <div className="container">

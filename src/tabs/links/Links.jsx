@@ -63,7 +63,7 @@ const Links = () => {
     <div className="active-tab-container">
       <h2>Links</h2>
       {loading ? (
-        <img className="loading" src="image/loading.gif" alt="Loading"></img>
+        <i class="loader --1"></i>
       ) : error ? (
         <div className="error-message">
           <p>{error}</p>

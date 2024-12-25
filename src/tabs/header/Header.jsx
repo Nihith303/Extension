@@ -43,9 +43,8 @@ const Headers = () => {
     <div>
       <h2>Headers</h2>
       {loading ? (
-        <img src="image/loading.gif" alt="Loading" className="loading" />
+        <i class="loader --1"></i>
       ) : error ? (
-        // Display error message
         <div className="error-message">
           <p>{error}</p>
         </div>
