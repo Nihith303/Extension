@@ -75,7 +75,6 @@ const Image = () => {
 
   return (
     <div className="active-tab-container">
-      <h2>Images</h2>
       {loading ? (
         <i class="loader --1"></i>
       ) : error ? (

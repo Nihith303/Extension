@@ -1,21 +1,21 @@
 /* Tabs Container */
 .tabs {
   display: flex;
-  justify-content: space-around;
+  gap: 0.5px;
+  padding: 4px 4px 0px;
   background-color: #f1f1f1;
   border-radius: 8px;
-  padding: 10px;
   box-shadow: 0 2px 5px rgba(177, 39, 39, 0.1);
 }
 
 /* Tab Buttons */
 .tab-button {
-  padding: 12px 16px;
   font-size: 1rem;
+  padding: 5px;
   font-weight: bold;
   cursor: pointer;
-  border: none;
-  border-radius: 5px;
+  border: 1px solid #007bff;
+  border-radius: 5px 5px 0px 0px;
   background-color: #ffffff;
   color: #007bff;
   transition: background-color 0.3s ease, color 0.3s ease;

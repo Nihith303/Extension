@@ -41,7 +41,6 @@ const Headers = () => {
 
   return (
     <div>
-      <h2>Headers</h2>
       {loading ? (
         <i class="loader --1"></i>
       ) : error ? (

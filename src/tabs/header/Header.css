@@ -14,11 +14,10 @@
   justify-content: center;
   text-align: center;
   width: 150px;
-  height: 100px;
+  height: 60px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
 }
 
 .header-item span:first-child {
@@ -36,7 +35,11 @@
 
 /* Header Structure */
 .header-structure {
-  position: relative;
+  padding-left: 5px;
+  overflow-y: auto;
+  position: absolute;
+  height: 63%;
+  width: 98%;
 }
 
 .header-content {
@@ -91,6 +94,8 @@
 
 .header-text {
   display: inline-block;
+  word-wrap: break-word;
+  text-overflow: ellipsis;
 }
 
 .dashed-line {

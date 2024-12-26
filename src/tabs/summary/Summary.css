@@ -9,10 +9,7 @@
   grid-template-columns: 2.3fr 0.2fr 7.5fr;
   margin: 4px;
   padding: 4px;
-  background-color: #fff;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
@@ -61,6 +58,6 @@
   color: red;
   font-weight: bold;
   text-align: center;
-  margin-top: 20px;
+  margin: 20px auto;
   font-size: 1.2em;
 }

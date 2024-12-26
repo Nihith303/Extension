@@ -58,19 +58,23 @@ const PageSpeedTest = () => {
     return (
       <div className="metrics">
         <p>
-          <strong>First Contentful Paint:</strong>{" "}
+          <strong>First Contentful Paint</strong>
+          {":"}
           {audits["first-contentful-paint"].displayValue}
         </p>
         <p>
-          <strong>Largest Contentful Paint:</strong>{" "}
+          <strong>Largest Contentful Paint</strong>
+          {":"}
           {audits["largest-contentful-paint"].displayValue}
         </p>
         <p>
-          <strong>Total Blocking Time:</strong>{" "}
+          <strong>Total Blocking Time</strong>
+          {":"}
           {audits["total-blocking-time"].displayValue}
         </p>
         <p>
-          <strong>Cumulative Layout Shift:</strong>{" "}
+          <strong>Cumulative Layout Shift</strong>
+          {":"}
           {audits["cumulative-layout-shift"].displayValue}
         </p>
       </div>
@@ -78,7 +82,7 @@ const PageSpeedTest = () => {
   };
 
   const renderScoreCard = (result, strategy) => {
-    const score = result.categories.performance.score * 100;
+    const score = Math.round(result.categories.performance.score * 100);
     const scoreColor = getScoreColor(score);
 
     return (
@@ -104,7 +108,6 @@ const PageSpeedTest = () => {
 
   return (
     <div className="pagespeed-container">
-      <h2>Page Speed Test</h2>
       <button onClick={runTest} disabled={isLoading}>
         {isLoading ? "Running Test..." : "Run Speed Test"}
       </button>

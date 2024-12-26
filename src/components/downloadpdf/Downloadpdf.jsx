@@ -35,18 +35,20 @@ const DownloadPdf = () => {
         });
         const tabId = tab.id;
 
-        const [websiteInfo, linksData, imagesData, headersData] =
+        const [websiteInfo, linksData, imagesData, headersData, schemadata] =
           await Promise.all([
             fetchWebsiteInfo(),
             fetchLinks(),
             fetchImages(tabId),
             fetchHeaders(tabId),
-            fetchSchemas(setSchemas),
+            fetchSchemas(),
           ]);
         setInfo(websiteInfo);
         setLinks(linksData);
         setImages(imagesData);
         setHeaders(headersData);
+        setSchemas(schemadata);
+        console.log(schemas);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -55,7 +57,7 @@ const DownloadPdf = () => {
   }, []);
 
   useEffect(() => {
-    if (schemas && Array.isArray(schemas) && schemas.length > 0) {
+    if (schemas && schemas.length > 0) {
       const graphData = buildGraphData(schemas);
       renderGraph(
         graphRef,
@@ -68,6 +70,7 @@ const DownloadPdf = () => {
         40,
         40
       );
+      console.log(graphRef);
     }
   }, [schemas]);
 
@@ -117,9 +120,7 @@ const DownloadPdf = () => {
       <button className="tab-button" onClick={downloadPdf} id="downloadbutton">
         Download as PDF
       </button>
-      <div className="noref">
-        {loading && <img src="image/loading.gif" alt="Loader" />}
-      </div>
+      <div className="noref">{loading && <i class="loader --1"></i>}</div>
     </div>
   );
 };

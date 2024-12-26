@@ -16,7 +16,6 @@ const App = () => {
   return (
     <div className="app-container">
       <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
-      <DownloadPdf />
       <div className="app-content">
         {activeTab === "summary" && <Summary />}
         {activeTab === "links" && <Links />}
@@ -24,6 +23,7 @@ const App = () => {
         {activeTab === "headers" && <Header />}
         {activeTab === "schema" && <Schema />}
         {activeTab === "pagespeedtest" && <PageSpeedTest />}
+        {activeTab === "download" && <DownloadPdf />}
       </div>
 
       <Footer />

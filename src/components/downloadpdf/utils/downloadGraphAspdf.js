@@ -13,7 +13,7 @@ export const downloadGraphAsPdf = (
     if (startPosition > 277) {
       doc.addPage();
       pageNumber = borderAndFooter(doc, pageNumber);
-      startPosition = 20;
+      startPosition = 30;
     }
     doc.setFontSize(14);
     doc.setTextColor(0, 123, 255);

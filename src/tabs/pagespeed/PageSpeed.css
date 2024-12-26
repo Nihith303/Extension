@@ -1,5 +1,5 @@
 .pagespeed-container {
-  padding: 0px, 20px;
+  margin-top: 10px;
   font-family: Arial, sans-serif;
   text-align: center;
 }
@@ -49,7 +49,7 @@
   justify-content: center;
   font-size: 20px;
   font-weight: bold;
-  background: #f3f3f3; 
+  background: #f3f3f3;
 }
 
 .circle-label {
@@ -64,19 +64,19 @@
   margin-top: 10px;
   color: #555;
   display: block;
-  width: 100%;  
-  overflow: hidden;  
+  width: 100%;
+  overflow: hidden;
 }
 
 .url-text .url {
-  word-wrap: break-word;  
-  overflow-wrap: break-word;  
+  word-wrap: break-word;
+  overflow-wrap: break-word;
   display: inline-block;
-  color: #0000FF;
-  white-space: normal;  
-  max-width: 100%;  
-  word-break: break-all;  
-  text-overflow: ellipsis;  
+  color: #0000ff;
+  white-space: normal;
+  max-width: 100%;
+  word-break: break-all;
+  text-overflow: ellipsis;
 }
 
 .legend {
@@ -125,5 +125,3 @@
   text-align: left;
   width: 100%;
 }
-
-

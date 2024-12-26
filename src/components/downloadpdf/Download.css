@@ -1,7 +1,12 @@
+#downloadpdf {
+  display: flex;
+  justify-content: space-between;
+}
+
 #downloadbutton {
+  border: 1px solid black;
   background-color: #f1caca;
   color: #1d1919;
-  width: 80%;
 }
 
 #downloadbutton:hover {
@@ -15,6 +20,6 @@
 }
 
 .noref {
-  width: 40px;
+  width: 60px;
   opacity: 0;
 }

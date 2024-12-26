@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "digispot-ai",
   "version": "1.0.0",
-  "description": "Crawl a website to get Summary, Links, Images, Headings, Schema, and more.",
+  "description": "SEO Audit of website to get Summary, Links, Images, Headings, Schema, and more.",
   "action": {
     "default_popup": "popup.html",
     "default_title": "digspot-ai",

@@ -7,13 +7,6 @@ body {
   color: #333;
 }
 
-h2 {
-  font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  color: #007bff;
-}
-
 div {
   box-sizing: border-box;
 }
@@ -27,10 +20,9 @@ div {
 
 .app-content {
   flex: 1;
-  padding: 10px 10px;
-  height: 80%;
-  overflow-y: auto;
-  border-radius: 10px;
+  margin-left: 5px;
+  height: 70%;
+  border: 1px solid #007bff;
 }
 
 .loader {

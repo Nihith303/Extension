@@ -34,7 +34,6 @@ const Summary = () => {
 
   return (
     <div className="active-tab-container">
-      <h2>Summary</h2>
       {loading ? (
         <i class="loader --1"></i>
       ) : error ? (

@@ -61,7 +61,6 @@ const Links = () => {
 
   return (
     <div className="active-tab-container">
-      <h2>Links</h2>
       {loading ? (
         <i class="loader --1"></i>
       ) : error ? (

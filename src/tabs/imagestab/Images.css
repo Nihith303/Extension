@@ -1,9 +1,9 @@
 .image-counts {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
   align-items: center;
   background-color: #f9f9f9;
+  margin-top: 5px;
 }
 
 .image-item {
@@ -13,7 +13,7 @@
   justify-content: center;
   text-align: center;
   width: 150px;
-  height: 100px;
+  height: 70px;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -36,13 +36,13 @@
 .image-nav {
   display: flex;
   gap: 2px;
-  margin: 10px 0px;
+  margin: 6px 0px 6px 4px;
   position: relative;
 }
 
 .image-nav button {
   font-size: 1rem;
-  padding: 10px 20px;
+  padding: 5px 20px;
   border: none;
   background-color: #007bff;
   color: white;
@@ -53,7 +53,7 @@
 .image-nav .export-button {
   position: absolute;
   right: 1rem;
-  top: 1.2rem;
+  top: 0.85rem;
   transform: translateY(-50%);
   background-color: #28a745;
   margin-left: 5rem;
@@ -66,17 +66,14 @@
 .images-table {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 10px;
   padding: 10px;
   max-height: calc(100vh - 200px);
   overflow: auto;
   box-sizing: border-box;
   background-color: #f9f9f9;
-  position: relative;
 }
 
 .image-preview {
-  position: relative;
   flex-shrink: 0;
   max-width: 100%;
   display: flex;
@@ -90,7 +87,7 @@
 .image-preview:hover img {
   transform: scale(1.5);
   z-index: 1000;
-  position: absolute;
+  position: relative;
 }
 
 .image-preview img {
@@ -102,12 +99,16 @@
   transition: transform 0.2s ease-in-out;
 }
 
+.image-preview p {
+  margin: 2px;
+}
+
 .image-preview:hover img {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .image-details {
-  padding: 10px 6px;
+  padding: 5px 6px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #ffffff;
@@ -121,6 +122,7 @@
 
 .image-details p {
   margin-top: 1px;
+  margin-bottom: 1px;
   font-size: 14px;
 }
 
