@@ -135,6 +135,10 @@
   transform: translate(-50%, -50%);
 }
 
+#red-text {
+  color: red;
+}
+
 #no-links {
   margin-left: 1rem;
   width: 80%;

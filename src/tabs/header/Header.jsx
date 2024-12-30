@@ -53,7 +53,15 @@ const Headers = () => {
             {Object.keys(headerCounts).map((key) => (
               <div className="header-item" key={key}>
                 <span>{key.toUpperCase()}</span>
-                <span>{headerCounts[key] || 0}</span>
+                <span
+                  id={
+                    (key === "h1" || key === "h2") && headerCounts[key] === 0
+                      ? "red-text"
+                      : ""
+                  }
+                >
+                  {headerCounts[key] || 0}
+                </span>
               </div>
             ))}
           </div>

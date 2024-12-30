@@ -39,6 +39,122 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
+  max-height: 450px;
+  overflow: auto;
+}
+
+.info p {
+  display: grid;
+  grid-template-columns: 2.3fr 0.2fr 7.5fr auto;
+  margin: 4px;
+  padding: 4px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.info span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status {
+  position: relative;
+  cursor: pointer;
+}
+
+.status.red::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%; /* Place above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px; /* Set desired width for wrapping */
+  padding: 8px;
+  background: black;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  border-radius: 4px;
+  white-space: normal; /* Allows text wrapping */
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.status.red:hover::after {
+  opacity: 1;
+}
+
+.status.red {
+  color: red;
+  max-width: 50px;
+  animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.status.green {
+  color: green;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.buttons button {
+  padding: 10px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  flex: 1;
+  transition: background-color 0.3s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.buttons button:hover {
+  background-color: #0056b3;
+}
+
+.buttons button:active {
+  transform: scale(0.98);
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin: 20px auto;
+  font-size: 1.2em;
+}
+
+/* .info {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  max-height: 445px;
+  overflow: auto;
 }
 
 .info p {
@@ -97,7 +213,7 @@
   text-align: center;
   margin: 20px auto;
   font-size: 1.2em;
-}
+} */
 
 .link-counts {
   display: flex;
@@ -234,6 +350,10 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#red-text {
+  color: red;
 }
 
 #no-links {
@@ -377,16 +497,20 @@
 
 .image-url:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .no-items {
   display: flex;
   font-size: 1.2rem !important;
   font-weight: bold;
-  color: #f30f0fbe;
   text-align: center;
   margin: 2rem 0px;
   width: 100%;
+}
+
+.no-items p {
+  color: #f30f0fbe;
 }
 
 .header-counts {
@@ -554,7 +678,8 @@
   color: #333;
   padding: 10px 15px;
   font-size: 14px;
-  border-top: 1px solid #ddd;
+  border: 1px solid black;
+  border-radius: 8px;
 }
 
 .schema-entry {

@@ -1,14 +1,14 @@
 import { borderAndFooter } from "./borderandfooter";
 
 export const addImageTable = (doc, images, startPosition, pageNumber) => {
-  let yPosition = startPosition + 10;
+  let yPosition = startPosition;
   const leftMargin = 15;
   const cellPadding = 2;
-  const columnWidths = [15, 85, 50, 30]; // Column widths for Index, URL, ALT, and Description
+  const columnWidths = [15, 115, 28, 28];
   const rowPadding = 2;
   const pageHeight = 290;
 
-  if (yPosition > 297.0 / 2) {
+  if (yPosition > 297.0 * (3 / 4)) {
     doc.addPage();
     pageNumber = borderAndFooter(doc, pageNumber);
     yPosition = 20;
@@ -16,7 +16,7 @@ export const addImageTable = (doc, images, startPosition, pageNumber) => {
 
   doc.setFontSize(14);
   doc.setTextColor(0, 123, 255);
-  doc.text("Image Information by Category", leftMargin, yPosition);
+  doc.text("Images", 105, yPosition, { align: "center" });
   yPosition += 10;
 
   const categories = [
@@ -91,26 +91,6 @@ export const addImageTable = (doc, images, startPosition, pageNumber) => {
       yPosition + rowPadding + 2
     );
 
-    // Draw the header border around each column
-    doc.rect(leftMargin, yPosition, columnWidths[0], rowPadding + 5); // Index
-    doc.rect(
-      leftMargin + columnWidths[0],
-      yPosition,
-      columnWidths[1],
-      rowPadding + 5
-    );
-    doc.rect(
-      leftMargin + columnWidths[0] + columnWidths[1],
-      yPosition,
-      columnWidths[2],
-      rowPadding + 5
-    );
-    doc.rect(
-      leftMargin + columnWidths[0] + columnWidths[1] + columnWidths[2],
-      yPosition,
-      columnWidths[3],
-      rowPadding + 5
-    );
     yPosition += rowPadding + 5;
 
     doc.setFont(undefined, "normal");
@@ -142,29 +122,8 @@ export const addImageTable = (doc, images, startPosition, pageNumber) => {
         pageNumber = borderAndFooter(doc, pageNumber); // Add border and footer
         yPosition = 20; // Reset yPosition with top padding
       }
-
-      // Draw borders for each column in the row
-      doc.rect(leftMargin, yPosition, columnWidths[0], rowHeightAdjusted); // Index
-      doc.rect(
-        leftMargin + columnWidths[0],
-        yPosition,
-        columnWidths[1],
-        rowHeightAdjusted
-      ); // URL
-      doc.rect(
-        leftMargin + columnWidths[0] + columnWidths[1],
-        yPosition,
-        columnWidths[2],
-        rowHeightAdjusted
-      ); // ALT
-      doc.rect(
-        leftMargin + columnWidths[0] + columnWidths[1] + columnWidths[2],
-        yPosition,
-        columnWidths[3],
-        rowHeightAdjusted
-      ); // Description
-
       // Add content to the table
+      doc.setTextColor(0, 0, 0);
       doc.text(
         `${index + 1}`,
         leftMargin + cellPadding,
@@ -172,8 +131,12 @@ export const addImageTable = (doc, images, startPosition, pageNumber) => {
       );
 
       // URL column - make it clickable
-      doc.setTextColor(0, 0, 139); // Dark blue color for URLs
       srcText.forEach((line, lineIndex) => {
+        if (line === "No SRC") {
+          doc.setTextColor(255, 0, 0);
+        } else {
+          doc.setTextColor(0, 0, 139);
+        }
         doc.text(
           line,
           leftMargin + columnWidths[0] + cellPadding,
@@ -193,6 +156,11 @@ export const addImageTable = (doc, images, startPosition, pageNumber) => {
       // ALT and Description columns
       doc.setTextColor(0, 0, 0); // Reset color for ALT and Description
       altText.forEach((line, lineIndex) => {
+        if (line === "No ALT") {
+          doc.setTextColor(255, 0, 0);
+        } else {
+          doc.setTextColor(0, 0, 0);
+        }
         doc.text(
           line,
           leftMargin + columnWidths[0] + columnWidths[1] + cellPadding,
@@ -201,6 +169,11 @@ export const addImageTable = (doc, images, startPosition, pageNumber) => {
       });
 
       descText.forEach((line, lineIndex) => {
+        if (line === "No Description") {
+          doc.setTextColor(255, 0, 0);
+        } else {
+          doc.setTextColor(0, 0, 0);
+        }
         doc.text(
           line,
           leftMargin +

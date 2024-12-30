@@ -4,7 +4,7 @@ export const addLinksTable = (doc, links, startPosition, pageNumber) => {
   const categories = ["internal", "external", "withoutHref"];
   let yPosition = startPosition;
 
-  if (yPosition > 297.0 / 2) {
+  if (yPosition > 297.0 * (3 / 4)) {
     doc.addPage();
     pageNumber = borderAndFooter(doc, pageNumber);
     yPosition = 20;
@@ -13,7 +13,7 @@ export const addLinksTable = (doc, links, startPosition, pageNumber) => {
   // Table of Categories
   doc.setFontSize(14);
   doc.setTextColor(0, 123, 255);
-  doc.text("Links Information by Category", 20, yPosition);
+  doc.text("Links", 105, yPosition, { align: "center" });
 
   categories.forEach((category) => {
     if (yPosition + 17 > 270) {
@@ -37,9 +37,6 @@ export const addLinksTable = (doc, links, startPosition, pageNumber) => {
     doc.setFontSize(10);
     doc.setTextColor(0, 0, 0);
     doc.setFont(undefined, "bold");
-    doc.rect(20, yPosition - 5, 12, 7); // Index header border with padding
-    doc.rect(32, yPosition - 5, 88, 7); // URL header border
-    doc.rect(120, yPosition - 5, 70, 7); // Title header border
     doc.text("Index", 22, yPosition);
     doc.text("URL", 34, yPosition);
     doc.text("Title", 122, yPosition);
@@ -56,34 +53,29 @@ export const addLinksTable = (doc, links, startPosition, pageNumber) => {
         doc.addPage();
         pageNumber = borderAndFooter(doc, pageNumber);
         yPosition = 20;
-        doc.setFontSize(10);
-        doc.setFont(undefined, "bold");
-        doc.rect(20, yPosition - 5, 12, 7); // Index header border with padding
-        doc.rect(32, yPosition - 5, 88, 7); // URL header border
-        doc.rect(120, yPosition - 5, 70, 7); // Title header border
-        doc.text("Index", 22, yPosition);
-        doc.text("URL", 34, yPosition);
-        doc.text("Title", 122, yPosition);
-        yPosition += 7;
-        doc.setFont(undefined, "normal");
       }
 
-      doc.rect(20, yPosition - 5, 12, rowHeight); // Index border with padding
-      doc.rect(32, yPosition - 5, 88, rowHeight); // URL border
-      doc.rect(120, yPosition - 5, 70, rowHeight); // Title border
-
+      // Set color to black for index and other text
       doc.setTextColor(0, 0, 0);
       doc.text(`${index + 1}`, 22, yPosition);
 
-      // Set color to black for index and title
-      doc.setTextColor(0, 0, 0); // Black color for index and title
+      // Handle title text with conditional coloring
       titleText.forEach((line, lineIndex) => {
+        if (line === "No title") {
+          doc.setTextColor(255, 0, 0); // Red color for "No title"
+        } else {
+          doc.setTextColor(0, 0, 0); // Black color for valid titles
+        }
         doc.text(line, 122, yPosition + lineIndex * 7);
       });
 
       // Set color to dark blue for clickable URL text
-      doc.setTextColor(0, 0, 139); // Dark blue color for URLs
       urlText.forEach((line, lineIndex) => {
+        if (line === "No href") {
+          doc.setTextColor(255, 0, 0); // Red color for "No href"
+        } else {
+          doc.setTextColor(0, 0, 139); // Dark Blue color for valid liks
+        }
         doc.text(line, 34, yPosition + lineIndex * 7);
       });
 

@@ -17,6 +17,7 @@ export const downloadGraphAsPdf = (
     }
     doc.setFontSize(14);
     doc.setTextColor(0, 123, 255);
+    doc.setFont(undefined, "bold");
     doc.text("Schema Structure", 105, startPosition - 10, { align: "center" });
     doc.setFontSize(12);
     doc.setTextColor(255, 0, 0);

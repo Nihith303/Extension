@@ -44,12 +44,17 @@ const Links = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
-  const renderLinkCount = (label, category) => (
-    <div className="link-item">
-      <span>{label}</span>
-      <span>{links[category]?.length || 0}</span>
-    </div>
-  );
+  const renderLinkCount = (label, category) => {
+    const count = links[category]?.length || 0;
+    return (
+      <div className="link-item">
+        <span>{label}</span>
+        <span id={category === "withoutHref" && count > 0 ? "red-text" : ""}>
+          {count}
+        </span>
+      </div>
+    );
+  };
   const renderFilterButton = (label, category) => (
     <button
       className={view === category ? "active" : ""}
@@ -105,11 +110,14 @@ const Links = () => {
                           {link.href}
                         </a>
                       ) : (
-                        "No href"
+                        <span id="red-text">No href</span>
                       )}
                     </p>
                     <p>
-                      <strong>Title:</strong> {link.title}
+                      <strong>Title:</strong>{" "}
+                      <span id={link.title === "No title" ? "red-text" : ""}>
+                        {link.title}
+                      </span>
                     </p>
                   </div>
                   <div className="link-count">

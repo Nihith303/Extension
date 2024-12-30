@@ -7,7 +7,7 @@ export const fetchImages = async (tabId) => {
           const images = Array.from(document.querySelectorAll("img")).map(
             (img) => ({
               src: img.src || "No SRC",
-              alt: img.alt || "No ALT",
+              alt: img.alt.trim() || "No ALT",
               longDesc: img.longdesc || "No Description",
               width: img.naturalWidth || "N/A",
               height: img.naturalHeight || "N/A",

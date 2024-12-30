@@ -48,7 +48,7 @@ const PageSpeedTest = () => {
   };
 
   const getScoreColor = (score) => {
-    if (score >= 85) return "#4caf50";
+    if (score >= 90) return "#4caf50";
     if (score >= 50) return "#ffc107";
     return "#f44336";
   };

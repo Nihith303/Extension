@@ -13,6 +13,7 @@ import { addLinksTable } from "./utils/addLinksTable";
 import { addImageSummary } from "./utils/addImageDetails";
 import { addImageTable } from "./utils/addImageTable";
 import { addHeaderDetails } from "./utils/addHeaderDetails";
+import { addSchemaDetails } from "./utils/addschemadetails";
 import "./Download.css";
 
 const DownloadPdf = () => {
@@ -24,7 +25,7 @@ const DownloadPdf = () => {
   const [isDragEnabled, setIsDragEnabled] = useState(true);
   const graphRef = useRef(null);
   const simulationRef = useRef(null);
-  const [loading, setLoading] = useState(false); // Track loading state
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
@@ -48,7 +49,6 @@ const DownloadPdf = () => {
         setImages(imagesData);
         setHeaders(headersData);
         setSchemas(schemadata);
-        console.log(schemas);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -70,48 +70,53 @@ const DownloadPdf = () => {
         40,
         40
       );
-      console.log(graphRef);
     }
   }, [schemas]);
 
   const downloadPdf = async () => {
-    setLoading(true); // Show loader when downloading starts
+    setLoading(true);
     const jsPDF = (await import("jspdf")).jsPDF;
     const doc = new jsPDF();
-
     let yPosition = 35;
     let pageNumber = 1;
-    //doc.save("Schema.pdf");
-
+    const recommendations = [];
     [yPosition, pageNumber] = addMetaLinksDetails(
       doc,
       info,
       yPosition,
       pageNumber
     );
-    [yPosition, pageNumber] = addLinksSummary(
-      doc,
-      links,
-      yPosition,
-      pageNumber
-    );
-    [yPosition, pageNumber] = addImageSummary(
+    pageNumber = addImageSummary(
       doc,
       images,
       yPosition,
-      pageNumber
+      pageNumber,
+      recommendations
+    );
+    pageNumber = addLinksSummary(
+      doc,
+      links,
+      yPosition,
+      pageNumber,
+      recommendations
     );
     [yPosition, pageNumber] = addHeaderDetails(
       doc,
       headers,
       yPosition,
-      pageNumber
+      pageNumber,
+      recommendations
     );
     [yPosition, pageNumber] = addImageTable(doc, images, yPosition, pageNumber);
     [yPosition, pageNumber] = addLinksTable(doc, links, yPosition, pageNumber);
-    setLoading(false);
+    [yPosition, pageNumber] = addSchemaDetails(
+      doc,
+      schemas,
+      yPosition,
+      pageNumber
+    );
     downloadGraphAsPdf(doc, graphRef, yPosition, info.title, pageNumber);
-    // Hide loader once the download is complete
+    setLoading(false);
   };
 
   return (
@@ -120,7 +125,7 @@ const DownloadPdf = () => {
       <button className="tab-button" onClick={downloadPdf} id="downloadbutton">
         Download as PDF
       </button>
-      <div className="noref">{loading && <i class="loader --1"></i>}</div>
+      <div className="noref">{loading && <i className="loader --1"></i>}</div>
     </div>
   );
 };

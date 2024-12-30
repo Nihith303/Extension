@@ -132,14 +132,18 @@
 
 .image-url:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .no-items {
   display: flex;
   font-size: 1.2rem !important;
   font-weight: bold;
-  color: #f30f0fbe;
   text-align: center;
   margin: 2rem 0px;
   width: 100%;
+}
+
+.no-items p {
+  color: #f30f0fbe;
 }

@@ -51,7 +51,8 @@
   color: #333;
   padding: 10px 15px;
   font-size: 14px;
-  border-top: 1px solid #ddd;
+  border: 1px solid black;
+  border-radius: 8px;
 }
 
 .schema-entry {

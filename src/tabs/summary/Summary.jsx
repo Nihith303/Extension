@@ -2,15 +2,36 @@ import React, { useEffect, useState } from "react";
 import { fetchWebsiteInfo } from "../utils/fetchWebsiteInfo";
 import "./Summary.css";
 
-const InfoRow = ({ label, value }) => (
-  <p>
+const InfoRow = ({ label, value, valid, message }) => (
+  <p className={valid ? "valid" : "invalid"}>
     <span>
       <strong>{label}</strong>
     </span>
     <span>:</span>
     <span> {value}</span>
+    {valid ? (
+      <span className="status green">✔️</span>
+    ) : (
+      <span className="status red" title={message}>
+        ❌
+      </span>
+    )}
   </p>
 );
+
+const content_val = {
+  Title: "Have a title tag of optimal length (between 50 and 60 characters).",
+  Description:
+    "Have a description tag of optimal length (150 to 160 characters).",
+  Canonical:
+    "Search engines have a limited budget for crawling and indexing websites, Canonical tags help save time by indicating which URL to index.",
+  Language:
+    "This HTML attribute is used by various programs, search engines included, to help figure out what language the page is written in. This is helpful when trying to match the right content to the right user.",
+  "Robots Meta":
+    "A robots meta tag is an HTML snippet that tells search engines how to interact with a page, including how to index and display it in search results.",
+  "X-Robots Meta":
+    "X-robots meta tag is useful for controlling how search engines index and crawl non-HTML files, like images, PDFs, and other multimedia content.",
+};
 
 const Summary = () => {
   const [info, setInfo] = useState({});
@@ -32,23 +53,56 @@ const Summary = () => {
     getInfo();
   }, []);
 
+  const checkValidity = (label, value) => {
+    switch (label) {
+      case "Title":
+        return {
+          valid: value && value.length >= 50 && value.length <= 60,
+          message: content_val.Title,
+        };
+      case "Description":
+        return {
+          valid: value && value.length >= 150 && value.length <= 160,
+          message: content_val.Description,
+        };
+      default:
+        return {
+          valid: value && value !== "Not Available",
+          message: content_val[label] || "No information available.",
+        };
+    }
+  };
+
   return (
     <div className="active-tab-container">
       {loading ? (
-        <i class="loader --1"></i>
+        <i className="loader --1"></i>
       ) : error ? (
         <div className="error-message">
           <p>{error}</p>
         </div>
       ) : (
         <div className="info">
-          <InfoRow label="Title" value={info.title} />
-          <InfoRow label="Description" value={info.description} />
-          <InfoRow label="Canonical" value={info.canonical} />
-          <InfoRow label="URL" value={info.url} />
-          <InfoRow label="Language" value={info.lang} />
-          <InfoRow label="Robots Meta" value={info.robots} />
-          <InfoRow label="X-Robots Meta" value={info.xRobots} />
+          {Object.entries({
+            Title: info.title,
+            Description: info.description,
+            Canonical: info.canonical,
+            URL: info.url,
+            Language: info.lang,
+            "Robots Meta": info.robots,
+            "X-Robots Meta": info.xRobots,
+          }).map(([label, value]) => {
+            const { valid, message } = checkValidity(label, value);
+            return (
+              <InfoRow
+                key={label}
+                label={label}
+                value={value}
+                valid={valid}
+                message={message}
+              />
+            );
+          })}
         </div>
       )}
       {info.url && (

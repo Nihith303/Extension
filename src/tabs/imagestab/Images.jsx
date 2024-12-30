@@ -66,12 +66,16 @@ const Image = () => {
     }
   };
 
-  const renderImageItem = (label, count) => (
-    <div className="image-item">
-      <span>{label}</span>
-      <span>{count || 0}</span>
-    </div>
-  );
+  const renderImageItem = (label, count, category) => {
+    return (
+      <div className="image-item">
+        <span>{label}</span>
+        <span id={category !== "total" && count > 0 ? "red-text" : ""}>
+          {count || 0}
+        </span>
+      </div>
+    );
+  };
 
   return (
     <div className="active-tab-container">
@@ -84,10 +88,14 @@ const Image = () => {
       ) : (
         <>
           <div className="image-counts">
-            {renderImageItem("Total Images", images.total?.length)}
-            {renderImageItem("Without ALT", images.noAlt?.length)}
-            {renderImageItem("Without Description", images.noLongDesc?.length)}
-            {renderImageItem("Without SRC", images.noSrc?.length)}
+            {renderImageItem("Total Images", images.total?.length, "total")}
+            {renderImageItem("Without ALT", images.noAlt?.length, "noAlt")}
+            {renderImageItem(
+              "Without Description",
+              images.noLongDesc?.length,
+              "noLongDesc"
+            )}
+            {renderImageItem("Without SRC", images.noSrc?.length, "noSrc")}
           </div>
           <div className="image-nav">
             <button onClick={() => setView("total")}>Total</button>
@@ -110,15 +118,29 @@ const Image = () => {
               images[view].map((img, index) => (
                 <React.Fragment key={index}>
                   <div className="image-details">
-                    <p onClick={() => handleImageClick(img.src)}>
+                    <p>
                       <strong>URL:</strong>{" "}
-                      <span className="image-url">{img.src}</span>
+                      <span
+                        onClick={() => handleImageClick(img.src)}
+                        className="image-url"
+                        id={img.src === "No SRC" ? "red-text" : "image-url"}
+                      >
+                        {img.src || "No SRC"}
+                      </span>
                     </p>
                     <p>
-                      <strong>ALT:</strong> {img.alt}
+                      <strong>ALT:</strong>{" "}
+                      <span id={img.alt === "No ALT" ? "red-text" : ""}>
+                        {img.alt}
+                      </span>
                     </p>
                     <p>
-                      <strong>Description:</strong> {img.longDesc}
+                      <strong>Description:</strong>{" "}
+                      <span
+                        id={img.longDesc === "No Description" ? "red-text" : ""}
+                      >
+                        {img.longDesc}
+                      </span>
                     </p>
                   </div>
                   <div className="image-preview">
