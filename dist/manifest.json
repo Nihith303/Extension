@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Digispot AI - SEO Audit",
+  "version": "1.0.0",
+  "description": "An easy to use SEO audit tool for analyzing web page content, headings, links, images, social tags, and schema from your browser.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Digispot AI - SEO Insights"
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
+}

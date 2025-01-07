@@ -1,0 +1,1 @@
+{"version":3,"file":"content.js","sources":["../src/content.ts"],"sourcesContent":["console.log('Content script loaded');\r\n\r\nexport { };\r\n"],"names":[],"mappings":"AAAA,QAAQ,IAAI,uBAAuB"}
